@@ -2,7 +2,7 @@
  * ErrorDisplay Component
  * Related Jira Tickets: RSCI-9, RSCI-14
  * 
- * Displays error messages to the user
+ * Displays clear, user-friendly error messages for invalid uploads and API failures
  */
 
 import React from 'react'
@@ -13,18 +13,19 @@ function ErrorDisplay({ error }) {
     return null
   }
 
-  // TODO (RSCI-9): Show clear error messages for invalid uploads
-  // TODO (RSCI-14): Show error message when API fails
-  
-  // Placeholder - implement error display
-  // - Display error message to user
-  // - Style appropriately to make it clear this is an error
+  // RSCI-9: Show clear error messages for invalid uploads
+  // RSCI-14: Show error message when API fails
 
   return (
-    <div className="error-display">
+    <div className="error-display" role="alert" aria-live="polite">
       <div className="error-container">
-        {/* TODO: Add error icon and message display */}
-        <p>{error}</p>
+        <div className="error-icon-wrapper">
+          <span className="error-icon" aria-hidden="true">⚠️</span>
+        </div>
+        <div className="error-content">
+          <h4 className="error-title">Upload Error</h4>
+          <p className="error-message">{error}</p>
+        </div>
       </div>
     </div>
   )
