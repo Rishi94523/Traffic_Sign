@@ -3,7 +3,10 @@
  * Related Jira Ticket: RSCI-10
  * 
  * Handles API calls to the backend classification service
+ * RSCI-9: Includes clear error message handling for invalid uploads
  */
+
+import { formatErrorMessage } from '../utils/errorMessages'
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
