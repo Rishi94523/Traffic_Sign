@@ -84,9 +84,11 @@ def validate_file_size(file: UploadFile) -> bool:
     
     # Check if size is less than 10 MB
     if file_size > MAX_SIZE_BYTES:
+        file_size_mb = file_size / (1024 * 1024)
+        error_msg = get_error_message("FILE_TOO_LARGE", {"file_size_mb": file_size_mb})
         raise HTTPException(
             status_code=413,
-            detail=f"File size ({file_size / (1024 * 1024):.2f} MB) exceeds maximum allowed size of 10 MB"
+            detail=error_msg
         )
     
     return True
