@@ -7,21 +7,25 @@
 
 /**
  * Map backend error messages to user-friendly frontend messages
+ * RSCI-9: Provides consistent, clear error messaging
  */
 export const ERROR_MESSAGE_MAP = {
   // File type errors
   'Invalid file extension': 'Invalid file type. Only JPG and PNG image formats are allowed.',
   'Invalid MIME type': 'Invalid file format. The file must be a JPEG or PNG image.',
   'Only JPG and PNG': 'Only JPG and PNG image formats are allowed.',
+  'Invalid file type': 'Invalid file type. Only JPG and PNG image formats are allowed.',
   
   // File size errors
   'exceeds maximum allowed size': 'File size exceeds the maximum allowed size of 10 MB. Please upload a smaller image.',
   'File too large': 'File size exceeds the maximum allowed size of 10 MB.',
   'File size': 'File size exceeds the maximum allowed size of 10 MB.',
+  'exceeds maximum allowed size of 10 MB': 'File size exceeds the maximum allowed size of 10 MB. Please upload a smaller image.',
   
   // Generic errors
   'Filename is required': 'Filename is required. Please ensure your file has a name.',
   'validation failed': 'File validation failed. Please check that your file is a valid JPG or PNG image under 10 MB.',
+  'Network error': 'Network error: Failed to upload image. Please check your connection.',
 }
 
 /**
