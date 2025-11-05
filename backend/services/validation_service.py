@@ -87,7 +87,13 @@ def validate_image(file: UploadFile) -> Tuple[bool, str]:
     Returns:
         Tuple[bool, str]: (is_valid, error_message)
     """
-    # TODO: Call validate_file_type and validate_file_size
-    # Return (True, "") if valid, (False, error_message) if invalid
-    pass
+    try:
+        validate_file_type(file)
+        # TODO: Call validate_file_size when RSCI-7 is implemented
+        # validate_file_size(file)
+        return True, ""
+    except HTTPException as e:
+        return False, e.detail
+    except Exception as e:
+        return False, f"Validation error: {str(e)}"
 
