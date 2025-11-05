@@ -7,6 +7,7 @@
 
 import React, { useRef } from 'react'
 import './ImageUpload.css'
+import { formatErrorMessage } from '../utils/errorMessages'
 
 function ImageUpload({ onUpload, onError, loading, setLoading }) {
   const fileInputRef = useRef(null)
@@ -23,13 +24,17 @@ function ImageUpload({ onUpload, onError, loading, setLoading }) {
     const allowedTypes = ['image/jpeg', 'image/png']
     const maxSizeBytes = 10 * 1024 * 1024 // 10MB
 
+    // RSCI-9: Clear error messages for invalid uploads
     if (!allowedTypes.includes(file.type)) {
-      onError && onError('Invalid file type. Only JPG and PNG formats are allowed.')
+      const errorMsg = formatErrorMessage('Invalid file type. Only JPG and PNG formats are allowed.')
+      onError && onError(errorMsg)
       return
     }
 
     if (file.size > maxSizeBytes) {
-      onError && onError('File too large. Please upload an image under 10MB.')
+      const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2)
+      const errorMsg = formatErrorMessage(`File size (${fileSizeMB} MB) exceeds the maximum allowed size of 10 MB. Please upload a smaller image.`)
+      onError && onError(errorMsg)
       return
     }
 
