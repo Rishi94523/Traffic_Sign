@@ -17,10 +17,10 @@ export const ERROR_MESSAGE_MAP = {
   'Invalid file type': 'Invalid file type. Only JPG and PNG image formats are allowed.',
   
   // File size errors
-  'exceeds maximum allowed size': 'File size exceeds the maximum allowed size of 10 MB. Please upload a smaller image.',
-  'File too large': 'File size exceeds the maximum allowed size of 10 MB.',
-  'File size': 'File size exceeds the maximum allowed size of 10 MB.',
-  'exceeds maximum allowed size of 10 MB': 'File size exceeds the maximum allowed size of 10 MB. Please upload a smaller image.',
+  'exceeds maximum allowed size': 'File size exceeds the maximum allowed size of 10 MB. Please upload an image under 10MB.',
+  'File too large': 'File size exceeds the maximum allowed size of 10 MB. Please upload an image under 10MB.',
+  'File size': 'File size exceeds the maximum allowed size of 10 MB. Please upload an image under 10MB.',
+  'exceeds maximum allowed size of 10 MB': 'File size exceeds the maximum allowed size of 10 MB. Please upload an image under 10MB.',
   
   // Generic errors
   'Filename is required': 'Filename is required. Please ensure your file has a name.',
@@ -49,9 +49,9 @@ export function formatErrorMessage(error) {
     // Try to extract file size if present
     const sizeMatch = error.match(/(\d+\.?\d*)\s*MB/i)
     if (sizeMatch) {
-      return `File size (${sizeMatch[1]} MB) exceeds the maximum allowed size of 10 MB. Please upload a smaller image.`
+      return `File size (${sizeMatch[1]} MB) exceeds the maximum allowed size of 10 MB. Please upload an image under 10MB.`
     }
-    return 'File size exceeds the maximum allowed size of 10 MB. Please upload a smaller image.'
+    return 'File size exceeds the maximum allowed size of 10 MB. Please upload an image under 10MB.'
   }
   
   // Check for missing filename

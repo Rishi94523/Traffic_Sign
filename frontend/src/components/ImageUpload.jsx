@@ -49,7 +49,7 @@ function ImageUpload({ onUpload, onError, loading, setLoading }) {
 
     if (file.size > maxSizeBytes) {
       const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2)
-      const errorMsg = formatErrorMessage(`File size (${fileSizeMB} MB) exceeds the maximum allowed size of 10 MB. Please upload a smaller image.`)
+      const errorMsg = formatErrorMessage(`File size (${fileSizeMB} MB) exceeds the maximum allowed size of 10 MB. Please upload an image under 10MB.`)
       onError && onError(errorMsg)
       return
     }

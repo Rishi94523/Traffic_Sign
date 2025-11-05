@@ -10,7 +10,7 @@ ERROR_MESSAGES = {
     "INVALID_FILE_TYPE": "Invalid file type. Only JPG and PNG image formats are allowed.",
     "INVALID_FILE_EXTENSION": "Invalid file extension. Please upload a file with .jpg, .jpeg, or .png extension.",
     "INVALID_MIME_TYPE": "Invalid file format. The file must be a JPEG or PNG image.",
-    "FILE_TOO_LARGE": "File size exceeds the maximum allowed size of 10 MB. Please upload a smaller image.",
+    "FILE_TOO_LARGE": "File size exceeds the maximum allowed size of 10 MB. Please upload an image under 10MB.",
     "MISSING_FILENAME": "Filename is required. Please ensure your file has a name.",
     "EMPTY_FILE": "The uploaded file is empty. Please upload a valid image file.",
     "CORRUPTED_FILE": "The uploaded file appears to be corrupted or invalid. Please try uploading the file again.",
