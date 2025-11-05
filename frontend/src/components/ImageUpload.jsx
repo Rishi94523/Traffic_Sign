@@ -50,7 +50,7 @@ function ImageUpload({ onUpload, onError, loading, setLoading }) {
         type="file"
         ref={fileInputRef}
         onChange={handleFileChange}
-        accept="image/*"
+        accept="image/jpeg,image/png,.jpg,.jpeg,.png"
         style={{ display: 'none' }}
         disabled={loading}
       />
