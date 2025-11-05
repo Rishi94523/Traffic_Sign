@@ -3,7 +3,10 @@
  * Related Jira Ticket: RSCI-10
  * 
  * Handles API calls to the backend classification service
+ * RSCI-9: Includes clear error message handling for invalid uploads
  */
+
+import { formatErrorMessage } from '../utils/errorMessages'
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
@@ -37,11 +40,16 @@ export async function getClassificationResult(imageId) {
     
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}))
-      throw new Error(errorData.detail || 'Failed to get classification result')
+      const errorMsg = errorData.detail || 'Failed to get classification result'
+      throw new Error(formatErrorMessage(errorMsg))
     }
 
     return await response.json()
   } catch (error) {
+    // RSCI-9: Handle network errors
+    if (error.message && (error.message.includes('fetch') || error.message.includes('network'))) {
+      throw new Error(formatErrorMessage('Network error occurred. Please check your internet connection and try again.'))
+    }
     console.error('Get classification result error:', error)
     throw error
   }
@@ -57,11 +65,16 @@ export async function getClassificationHistory() {
     
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}))
-      throw new Error(errorData.detail || 'Failed to get classification history')
+      const errorMsg = errorData.detail || 'Failed to get classification history'
+      throw new Error(formatErrorMessage(errorMsg))
     }
 
     return await response.json()
   } catch (error) {
+    // RSCI-9: Handle network errors
+    if (error.message && (error.message.includes('fetch') || error.message.includes('network'))) {
+      throw new Error(formatErrorMessage('Network error occurred. Please check your internet connection and try again.'))
+    }
     console.error('Get classification history error:', error)
     throw error
   }

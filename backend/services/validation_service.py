@@ -9,6 +9,7 @@ TODO: Implement validation logic per Jira tickets
 from fastapi import UploadFile, HTTPException
 from typing import Tuple
 import os
+from services.error_messages import get_error_message, ERROR_MESSAGES
 
 # Allowed file extensions for RSCI-6: JPG and PNG only
 ALLOWED_EXTENSIONS = {".jpg", ".jpeg", ".png"}
@@ -32,24 +33,27 @@ def validate_file_type(file: UploadFile) -> bool:
         HTTPException: If file type is invalid
     """
     if not file.filename:
+        error_msg = get_error_message("MISSING_FILENAME")
         raise HTTPException(
             status_code=400,
-            detail="Filename is required for file type validation"
+            detail=error_msg
         )
     
     # Check file extension
     file_ext = os.path.splitext(file.filename)[1].lower()
     if file_ext not in ALLOWED_EXTENSIONS:
+        error_msg = get_error_message("INVALID_FILE_EXTENSION", {"file_type": file_ext})
         raise HTTPException(
             status_code=400,
-            detail=f"Invalid file type. Only JPG and PNG formats are allowed. Received: {file_ext}"
+            detail=error_msg
         )
     
     # Check MIME type if provided
     if file.content_type and file.content_type not in ALLOWED_MIME_TYPES:
+        error_msg = get_error_message("INVALID_MIME_TYPE", {"file_type": file.content_type})
         raise HTTPException(
             status_code=400,
-            detail=f"Invalid MIME type. Only image/jpeg and image/png are allowed. Received: {file.content_type}"
+            detail=error_msg
         )
     
     return True
@@ -57,19 +61,20 @@ def validate_file_type(file: UploadFile) -> bool:
 
 def validate_file_size(file: UploadFile) -> bool:
     """
-    Validate file size - reject if larger than 10 MB.
-    Jira Ticket: RSCI-7
+    Validate file size - reject if larger than 10 MB or empty.
+    Jira Ticket: RSCI-7, RSCI-9
     
     Args:
         file: Uploaded file
         
     Returns:
-        bool: True if file size is valid (< 10MB)
+        bool: True if file size is valid (< 10MB and > 0)
         
     Raises:
-        HTTPException: If file size exceeds 10MB
+        HTTPException: If file size exceeds 10MB or is empty
     """
     MAX_SIZE_BYTES = 10 * 1024 * 1024  # 10 MB
+    MIN_SIZE_BYTES = 1  # Minimum 1 byte (to detect empty files)
     
     # Read file content to get size
     content = file.file.read()
@@ -78,11 +83,21 @@ def validate_file_size(file: UploadFile) -> bool:
     # Reset file pointer for potential future reads
     file.file.seek(0)
     
+    # RSCI-9: Check for empty files
+    if file_size < MIN_SIZE_BYTES:
+        error_msg = get_error_message("EMPTY_FILE")
+        raise HTTPException(
+            status_code=400,
+            detail=error_msg
+        )
+    
     # Check if size is less than 10 MB
     if file_size > MAX_SIZE_BYTES:
+        file_size_mb = file_size / (1024 * 1024)
+        error_msg = get_error_message("FILE_TOO_LARGE", {"file_size_mb": file_size_mb})
         raise HTTPException(
             status_code=413,
-            detail=f"File size ({file_size / (1024 * 1024):.2f} MB) exceeds maximum allowed size of 10 MB"
+            detail=error_msg
         )
     
     return True
@@ -92,6 +107,7 @@ def validate_image(file: UploadFile) -> Tuple[bool, str]:
     """
     Comprehensive image validation.
     Combines file type and size validation.
+    RSCI-9: Includes validation for empty and corrupted files
     
     Args:
         file: Uploaded file
@@ -101,11 +117,24 @@ def validate_image(file: UploadFile) -> Tuple[bool, str]:
     """
     try:
         validate_file_type(file)
-        # TODO: Call validate_file_size when RSCI-7 is implemented
-        # validate_file_size(file)
+        validate_file_size(file)
+        
+        # RSCI-9: Basic corruption check - verify file is readable
+        # This is a simple check - more sophisticated validation can be added
+        content = file.file.read(1024)  # Read first 1KB
+        file.file.seek(0)  # Reset pointer
+        
+        if not content or len(content) == 0:
+            error_msg = get_error_message("CORRUPTED_FILE")
+            return False, error_msg
+            
         return True, ""
     except HTTPException as e:
         return False, e.detail
     except Exception as e:
+        # RSCI-9: Check if it's a corrupted file error
+        if "corrupted" in str(e).lower() or "invalid" in str(e).lower():
+            error_msg = get_error_message("CORRUPTED_FILE")
+            return False, error_msg
         return False, f"Validation error: {str(e)}"
 

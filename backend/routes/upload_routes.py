@@ -9,6 +9,7 @@ TODO: Implement upload functionality per Jira tickets
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from fastapi.responses import JSONResponse
 from services.validation_service import validate_file_type, validate_file_size
+from services.error_messages import get_error_message
 
 router = APIRouter()
 
@@ -29,11 +30,16 @@ async def upload_image(file: UploadFile = File(...)):
         JSONResponse with upload status and file info
     """
     # Validate type (RSCI-6) and size (RSCI-7)
+    # RSCI-9: Provide clear error messages for invalid uploads
     try:
         validate_file_type(file)
         validate_file_size(file)
-    except HTTPException:
-        raise
+    except HTTPException as e:
+        # Re-raise with clear error message (already formatted by validation service)
+        raise HTTPException(
+            status_code=e.status_code,
+            detail=e.detail
+        )
     return JSONResponse(
         status_code=200,
         content={

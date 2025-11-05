@@ -7,6 +7,7 @@
 
 import React, { useRef } from 'react'
 import './ImageUpload.css'
+import { formatErrorMessage } from '../utils/errorMessages'
 
 function ImageUpload({ onUpload, onError, loading, setLoading }) {
   const fileInputRef = useRef(null)
@@ -22,14 +23,34 @@ function ImageUpload({ onUpload, onError, loading, setLoading }) {
     // RSCI-6: Restrict to JPG and PNG only
     const allowedTypes = ['image/jpeg', 'image/png']
     const maxSizeBytes = 10 * 1024 * 1024 // 10MB
+    const minSizeBytes = 1 // Minimum file size
 
+    // RSCI-9: Clear error messages for invalid uploads
+    
+    // Check for missing filename
+    if (!file.name || file.name.trim() === '') {
+      const errorMsg = formatErrorMessage('Filename is required. Please ensure your file has a name.')
+      onError && onError(errorMsg)
+      return
+    }
+    
+    // Check for empty file
+    if (file.size < minSizeBytes) {
+      const errorMsg = formatErrorMessage('The uploaded file is empty. Please upload a valid image file.')
+      onError && onError(errorMsg)
+      return
+    }
+    
     if (!allowedTypes.includes(file.type)) {
-      onError && onError('Invalid file type. Only JPG and PNG formats are allowed.')
+      const errorMsg = formatErrorMessage('Invalid file type. Only JPG and PNG formats are allowed.')
+      onError && onError(errorMsg)
       return
     }
 
     if (file.size > maxSizeBytes) {
-      onError && onError('File too large. Please upload an image under 10MB.')
+      const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2)
+      const errorMsg = formatErrorMessage(`File size (${fileSizeMB} MB) exceeds the maximum allowed size of 10 MB. Please upload an image under 10MB.`)
+      onError && onError(errorMsg)
       return
     }
 
