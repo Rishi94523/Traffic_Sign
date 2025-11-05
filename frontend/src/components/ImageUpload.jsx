@@ -18,21 +18,24 @@ function ImageUpload({ onUpload, onError, loading, setLoading }) {
       return
     }
 
-    // TODO (RSCI-4): Implement image upload from local device
-    // TODO (RSCI-6): Validate file type - only allow JPG and PNG
-    // TODO (RSCI-7): Validate file size - reject if > 10MB
-    // TODO (RSCI-9): Show error messages for invalid uploads
-    // TODO (RSCI-16): Add drag-and-drop functionality
-    
-    // Placeholder - implement actual upload logic
-    // - Create preview URL using FileReader
-    // - Call onUpload with file and preview data
-    // - Call onError with appropriate message if validation fails
-    
-    // Temporary placeholder to prevent errors
-    if (onError) {
-      onError('Upload functionality not implemented yet - RSCI-4')
+    // Basic client-side validation and preview generation (RSCI-4, RSCI-8)
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif']
+    const maxSizeBytes = 10 * 1024 * 1024 // 10MB
+
+    if (!allowedTypes.includes(file.type)) {
+      onError && onError('Invalid file type. Please upload PNG, JPG, or GIF.')
+      return
     }
+
+    if (file.size > maxSizeBytes) {
+      onError && onError('File too large. Please upload an image under 10MB.')
+      return
+    }
+
+    // Create a preview URL so ImagePreview can display a thumbnail
+    const previewUrl = URL.createObjectURL(file)
+
+    onUpload && onUpload({ file, preview: previewUrl, name: file.name, type: file.type, size: file.size })
   }
 
   const handleClick = () => {
