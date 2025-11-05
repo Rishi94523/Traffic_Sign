@@ -8,7 +8,7 @@ TODO: Implement upload functionality per Jira tickets
 
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from fastapi.responses import JSONResponse
-from services.validation_service import validate_file_type
+from services.validation_service import validate_file_type, validate_file_size
 
 router = APIRouter()
 
@@ -18,30 +18,26 @@ async def upload_image(file: UploadFile = File(...)):
     """
     Upload a road sign image for classification.
     
-    Jira Tickets: RSCI-4, RSCI-16
+    Jira Tickets: RSCI-4, RSCI-6, RSCI-7, RSCI-16
     
     TODO (RSCI-4): Implement image upload from local device
-    TODO (RSCI-6): Restrict uploads to JPG and PNG formats only - IMPLEMENTED
+    TODO (RSCI-6): Restrict uploads to JPG and PNG formats only
     TODO (RSCI-7): Reject images larger than 10 MB
     TODO (RSCI-16): Add drag-and-drop support
     
     Returns:
         JSONResponse with upload status and file info
     """
-    # Validate file type (JPG/PNG only - RSCI-6)
+    # Validate type (RSCI-6) and size (RSCI-7)
     try:
         validate_file_type(file)
+        validate_file_size(file)
     except HTTPException:
-        raise  # Re-raise HTTPException from validation
-    
-    # TODO: Validate file size (< 10MB - RSCI-7)
-    # TODO: Handle file upload (RSCI-4)
-    
-    # Return success response
+        raise
     return JSONResponse(
         status_code=200,
         content={
-            "message": "File uploaded successfully",
+            "message": "File validated successfully",
             "filename": file.filename,
             "content_type": file.content_type,
             "validated": True

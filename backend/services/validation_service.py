@@ -69,11 +69,23 @@ def validate_file_size(file: UploadFile) -> bool:
     Raises:
         HTTPException: If file size exceeds 10MB
     """
-    # TODO (RSCI-7): Implement file size validation
-    # - Read file content to get size
-    # - Check if size is less than 10 MB (10 * 1024 * 1024 bytes)
-    # - Raise HTTPException with appropriate error message if too large
-    pass
+    MAX_SIZE_BYTES = 10 * 1024 * 1024  # 10 MB
+    
+    # Read file content to get size
+    content = file.file.read()
+    file_size = len(content)
+    
+    # Reset file pointer for potential future reads
+    file.file.seek(0)
+    
+    # Check if size is less than 10 MB
+    if file_size > MAX_SIZE_BYTES:
+        raise HTTPException(
+            status_code=413,
+            detail=f"File size ({file_size / (1024 * 1024):.2f} MB) exceeds maximum allowed size of 10 MB"
+        )
+    
+    return True
 
 
 def validate_image(file: UploadFile) -> Tuple[bool, str]:
