@@ -33,11 +33,20 @@ export async function uploadImage(imageFile) {
 
     return await response.json()
   } catch (error) {
-    // RSCI-9: Format error message for user-friendly display
+    // RSCI-9: Handle network errors and format error messages
     if (error.message) {
+      // Check if it's a network error
+      const errorLower = error.message.toLowerCase()
+      if (errorLower.includes('network') || 
+          errorLower.includes('fetch') || 
+          errorLower.includes('connection') ||
+          errorLower.includes('failed to fetch')) {
+        throw new Error(formatErrorMessage('Network error occurred during upload. Please check your internet connection and try again.'))
+      }
       throw new Error(formatErrorMessage(error.message))
     }
-    throw new Error(formatErrorMessage('Network error: Failed to upload image. Please check your connection.'))
+    // Generic network error
+    throw new Error(formatErrorMessage('Network error occurred during upload. Please check your internet connection and try again.'))
   }
 }
 
