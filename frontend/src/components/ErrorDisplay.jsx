@@ -22,7 +22,15 @@ function ErrorDisplay({ error }) {
   const errorTitle = errorType === 'file_type' 
     ? 'Invalid File Type' 
     : errorType === 'file_size' 
-    ? 'File Too Large' 
+    ? 'File Too Large'
+    : errorType === 'empty_file'
+    ? 'Empty File'
+    : errorType === 'corrupted_file'
+    ? 'Corrupted File'
+    : errorType === 'missing_filename'
+    ? 'Missing Filename'
+    : errorType === 'network_error'
+    ? 'Network Error'
     : 'Upload Error'
 
   return (

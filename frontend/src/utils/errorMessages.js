@@ -59,6 +59,21 @@ export function formatErrorMessage(error) {
     return 'Filename is required. Please ensure your file has a name.'
   }
   
+  // Check for empty file
+  if (errorLower.includes('empty') || (errorLower.includes('file') && errorLower.includes('empty'))) {
+    return 'The uploaded file is empty. Please upload a valid image file.'
+  }
+  
+  // Check for corrupted file
+  if (errorLower.includes('corrupted') || errorLower.includes('invalid') && errorLower.includes('file')) {
+    return 'The uploaded file appears to be corrupted or invalid. Please try uploading the file again.'
+  }
+  
+  // Check for network errors
+  if (errorLower.includes('network') || errorLower.includes('connection') || errorLower.includes('fetch')) {
+    return 'Network error occurred during upload. Please check your internet connection and try again.'
+  }
+  
   // Return original error if no match found (should be user-friendly already from backend)
   return error
 }
@@ -83,6 +98,18 @@ export function getErrorType(error) {
   
   if (errorLower.includes('filename') && errorLower.includes('required')) {
     return 'missing_filename'
+  }
+  
+  if (errorLower.includes('empty') || (errorLower.includes('file') && errorLower.includes('empty'))) {
+    return 'empty_file'
+  }
+  
+  if (errorLower.includes('corrupted')) {
+    return 'corrupted_file'
+  }
+  
+  if (errorLower.includes('network') || errorLower.includes('connection') || errorLower.includes('fetch')) {
+    return 'network_error'
   }
   
   return 'unknown'
