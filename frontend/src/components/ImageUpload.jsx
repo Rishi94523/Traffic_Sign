@@ -19,11 +19,12 @@ function ImageUpload({ onUpload, onError, loading, setLoading }) {
     }
 
     // Basic client-side validation and preview generation (RSCI-4, RSCI-8)
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif']
+    // RSCI-6: Restrict to JPG and PNG only
+    const allowedTypes = ['image/jpeg', 'image/png']
     const maxSizeBytes = 10 * 1024 * 1024 // 10MB
 
     if (!allowedTypes.includes(file.type)) {
-      onError && onError('Invalid file type. Please upload PNG, JPG, or GIF.')
+      onError && onError('Invalid file type. Only JPG and PNG formats are allowed.')
       return
     }
 
@@ -50,7 +51,7 @@ function ImageUpload({ onUpload, onError, loading, setLoading }) {
         type="file"
         ref={fileInputRef}
         onChange={handleFileChange}
-        accept="image/*"
+        accept="image/jpeg,image/png,.jpg,.jpeg,.png"
         style={{ display: 'none' }}
         disabled={loading}
       />
@@ -64,7 +65,7 @@ function ImageUpload({ onUpload, onError, loading, setLoading }) {
         <p className="upload-text">
           {loading ? 'Processing...' : 'Click to upload or drag and drop'}
         </p>
-        <p className="upload-hint">PNG, JPG, GIF up to 10MB</p>
+        <p className="upload-hint">PNG or JPG only, up to 10MB</p>
       </div>
     </div>
   )
