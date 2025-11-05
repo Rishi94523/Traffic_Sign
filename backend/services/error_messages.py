@@ -12,6 +12,9 @@ ERROR_MESSAGES = {
     "INVALID_MIME_TYPE": "Invalid file format. The file must be a JPEG or PNG image.",
     "FILE_TOO_LARGE": "File size exceeds the maximum allowed size of 10 MB. Please upload a smaller image.",
     "MISSING_FILENAME": "Filename is required. Please ensure your file has a name.",
+    "EMPTY_FILE": "The uploaded file is empty. Please upload a valid image file.",
+    "CORRUPTED_FILE": "The uploaded file appears to be corrupted or invalid. Please try uploading the file again.",
+    "NETWORK_ERROR": "Network error occurred during upload. Please check your internet connection and try again.",
     "GENERIC_VALIDATION_ERROR": "File validation failed. Please check that your file is a valid JPG or PNG image under 10 MB.",
 }
 
