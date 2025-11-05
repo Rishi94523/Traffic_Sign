@@ -32,7 +32,13 @@ async def classify_image(request: ClassificationRequest):
     # TODO (RSCI-10): Implement API call to classification service
     # - Call classification_service.classify() or external API
     # - Return JSON response with classification results
-    pass
+    return JSONResponse(
+        status_code=501,
+        content={
+            "message": "Not implemented - RSCI-10",
+            "image_id": request.image_id
+        }
+    )
 
 
 @router.get("/results/{image_id}")

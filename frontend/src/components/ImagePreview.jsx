@@ -12,7 +12,9 @@ import './ImagePreview.css'
 function ImagePreview({ image, onClassify, onError, loading, setLoading }) {
   const handleClassify = async () => {
     if (!image || !image.file) {
-      onError('No image available for classification')
+      if (onError) {
+        onError('No image available for classification')
+      }
       return
     }
 
@@ -27,6 +29,14 @@ function ImagePreview({ image, onClassify, onError, loading, setLoading }) {
     // - Handle success (call onClassify with result)
     // - Handle error (call onError with error message)
     // - Set loading state to false when done
+    
+    // Temporary placeholder to prevent errors
+    if (setLoading) {
+      setLoading(false)
+    }
+    if (onError) {
+      onError('Classification functionality not implemented yet - RSCI-10')
+    }
   }
 
   return (
@@ -35,7 +45,13 @@ function ImagePreview({ image, onClassify, onError, loading, setLoading }) {
         <h3>Image Preview</h3>
         {/* TODO (RSCI-8): Display the uploaded image preview */}
         <div className="preview-image-wrapper">
-          {/* Add img tag here to display image.preview */}
+          {image && image.preview && (
+            <img 
+              src={image.preview} 
+              alt="Uploaded road sign" 
+              className="preview-image"
+            />
+          )}
         </div>
         {/* TODO (RSCI-11): Add loading spinner component */}
         <button 

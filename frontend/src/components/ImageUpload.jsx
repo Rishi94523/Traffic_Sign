@@ -28,6 +28,11 @@ function ImageUpload({ onUpload, onError, loading, setLoading }) {
     // - Create preview URL using FileReader
     // - Call onUpload with file and preview data
     // - Call onError with appropriate message if validation fails
+    
+    // Temporary placeholder to prevent errors
+    if (onError) {
+      onError('Upload functionality not implemented yet - RSCI-4')
+    }
   }
 
   const handleClick = () => {

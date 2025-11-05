@@ -32,7 +32,13 @@ async def upload_image(file: UploadFile = File(...)):
     # - Validate file size (< 10MB - RSCI-7)
     # - Handle file upload (RSCI-4)
     # - Return appropriate response
-    pass
+    return JSONResponse(
+        status_code=501,
+        content={
+            "message": "Not implemented - RSCI-4, RSCI-6, RSCI-7, RSCI-16",
+            "filename": file.filename if file.filename else "unknown"
+        }
+    )
 
 
 @router.get("/status")
@@ -44,5 +50,8 @@ async def upload_status():
     TODO: Implement upload status tracking
     """
     # TODO: Implement status check logic
-    pass
+    return JSONResponse(
+        status_code=501,
+        content={"message": "Not implemented - RSCI-16"}
+    )
 
