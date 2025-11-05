@@ -35,35 +35,63 @@ This repository contains the source code and documentation for the Traffic Sign 
 ## 🚀 Getting Started
 
 ### Prerequisites
-- [List your prerequisites here]
+- Python 3.8+ (for backend)
+- Node.js 16+ (for frontend)
+- Git
 
-### Installation
+### Quick Start
+
+**See detailed setup instructions in [docs/setup_instructions.md](docs/setup_instructions.md)**
+
 1. Clone the repository
    ```bash
    git clone https://github.com/pestechnology/PESU_RR_AIML_D_P43_Traffic_Sign_Recognition_Demo_chicken-gang.git
    cd PESU_RR_AIML_D_P43_Traffic_Sign_Recognition_Demo_chicken-gang
    ```
 
-2. Install dependencies
+2. Set up Backend
    ```bash
-   # Add your installation commands here
+   cd backend
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   pip install -r requirements.txt
+   uvicorn app:app --reload
    ```
 
-3. Run the application
+3. Set up Frontend (in a new terminal)
    ```bash
-   # Add your run commands here
+   cd frontend
+   npm install
+   npm run dev
    ```
+
+4. Access the application
+   - Frontend: http://localhost:5173
+   - Backend API: http://localhost:8000
+   - API Docs: http://localhost:8000/docs
 
 ## 📁 Project Structure
 
 ```
-PESU_RR_AIML_D_P43_Traffic_Sign_Recognition_Demo_chicken-gang/
-├── src/                 # Source code
-├── docs/               # Documentation
-├── tests/              # Test files
-├── .github/            # GitHub workflows and templates
-├── README.md          # This file
-└── ...
+road-sign-classification/
+├── backend/              # FastAPI backend
+│   ├── app.py           # FastAPI entry point
+│   ├── routes/          # API route handlers
+│   ├── services/        # Business logic
+│   ├── tests/           # Test files
+│   └── requirements.txt # Python dependencies
+├── frontend/            # React + Vite frontend
+│   ├── src/
+│   │   ├── components/  # React components
+│   │   └── api/         # API client
+│   ├── public/
+│   └── package.json     # Node dependencies
+├── docs/                # Documentation
+│   ├── setup_instructions.md
+│   └── sprint_summary.md
+├── .github/
+│   └── workflows/       # CI/CD pipelines
+└── README.md
 ```
 
 ## 🛠️ Development Guidelines
