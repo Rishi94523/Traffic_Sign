@@ -18,6 +18,7 @@ module.exports = {
     ],
     'react/prop-types': 'off', // Disable prop-types check for now
     'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+    'no-console': ['warn', { allow: ['error', 'warn'] }], // Allow console.error and console.warn
   },
 }
 
