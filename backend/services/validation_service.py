@@ -8,6 +8,13 @@ TODO: Implement validation logic per Jira tickets
 
 from fastapi import UploadFile, HTTPException
 from typing import Tuple
+import os
+
+# Allowed file extensions for RSCI-6: JPG and PNG only
+ALLOWED_EXTENSIONS = {".jpg", ".jpeg", ".png"}
+
+# Allowed MIME types for RSCI-6: JPG and PNG only
+ALLOWED_MIME_TYPES = {"image/jpeg", "image/png"}
 
 
 def validate_file_type(file: UploadFile) -> bool:
