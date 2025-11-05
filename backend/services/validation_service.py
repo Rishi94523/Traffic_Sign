@@ -31,11 +31,28 @@ def validate_file_type(file: UploadFile) -> bool:
     Raises:
         HTTPException: If file type is invalid
     """
-    # TODO (RSCI-6): Implement file type validation
-    # - Check if file extension is .jpg, .jpeg, or .png
-    # - Check content type is image/jpeg or image/png
-    # - Raise HTTPException with appropriate error message if invalid
-    pass
+    if not file.filename:
+        raise HTTPException(
+            status_code=400,
+            detail="Filename is required for file type validation"
+        )
+    
+    # Check file extension
+    file_ext = os.path.splitext(file.filename)[1].lower()
+    if file_ext not in ALLOWED_EXTENSIONS:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid file type. Only JPG and PNG formats are allowed. Received: {file_ext}"
+        )
+    
+    # Check MIME type if provided
+    if file.content_type and file.content_type not in ALLOWED_MIME_TYPES:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid MIME type. Only image/jpeg and image/png are allowed. Received: {file.content_type}"
+        )
+    
+    return True
 
 
 def validate_file_size(file: UploadFile) -> bool:
