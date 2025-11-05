@@ -65,7 +65,7 @@ function ImageUpload({ onUpload, onError, loading, setLoading }) {
         <p className="upload-text">
           {loading ? 'Processing...' : 'Click to upload or drag and drop'}
         </p>
-        <p className="upload-hint">PNG, JPG, GIF up to 10MB</p>
+        <p className="upload-hint">PNG or JPG only, up to 10MB</p>
       </div>
     </div>
   )
