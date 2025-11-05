@@ -7,6 +7,7 @@
 
 import React from 'react'
 import './ErrorDisplay.css'
+import { getErrorType } from '../utils/errorMessages'
 
 function ErrorDisplay({ error }) {
   if (!error) {
@@ -15,6 +16,14 @@ function ErrorDisplay({ error }) {
 
   // RSCI-9: Show clear error messages for invalid uploads
   // RSCI-14: Show error message when API fails
+  
+  // Categorize error type for better UX
+  const errorType = getErrorType(error)
+  const errorTitle = errorType === 'file_type' 
+    ? 'Invalid File Type' 
+    : errorType === 'file_size' 
+    ? 'File Too Large' 
+    : 'Upload Error'
 
   return (
     <div className="error-display" role="alert" aria-live="polite">
@@ -23,7 +32,7 @@ function ErrorDisplay({ error }) {
           <span className="error-icon" aria-hidden="true">⚠️</span>
         </div>
         <div className="error-content">
-          <h4 className="error-title">Upload Error</h4>
+          <h4 className="error-title">{errorTitle}</h4>
           <p className="error-message">{error}</p>
         </div>
       </div>
