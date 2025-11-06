@@ -1,58 +1,71 @@
-name: CI Pipeline
+name: CI
 
 on:
   push:
-    branches: [ main, develop, base-structure ]
+    branches: [ main, develop ]
   pull_request:
     branches: [ main, develop ]
 
 jobs:
-  backend-tests:
+  frontend:
+    name: Frontend Tests
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./backend
-    
-    steps:
-    - uses: actions/checkout@v3
-    
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.8'
-    
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-    
-    - name: Run tests
-      run: |
-        pytest tests/ -v || exit 0
-      # TODO: Add actual tests when implemented
 
-  frontend-lint:
-    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./frontend
-    
+
     steps:
-    - uses: actions/checkout@v3
-    
+    - name: Checkout code
+      uses: actions/checkout@v4
+
     - name: Set up Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
-        node-version: '18'
-    
+        node-version: '20.x'
+        cache: 'npm'
+        cache-dependency-path: frontend/package-lock.json
+
     - name: Install dependencies
-      run: npm install
-    
+      run: npm ci
+
     - name: Run linter
-      run: npm run lint || exit 0
-      # TODO: Configure ESLint properly
-      # Currently allowing warnings for skeleton code
+      run: npm run lint
+      continue-on-error: true
 
-  # TODO: Add build jobs for production builds
-  # TODO: Add deployment jobs when ready
+    - name: Run tests
+      run: npm run test:ci
 
+    - name: Build
+      run: npm run build
+
+  backend:
+    name: Backend Tests
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./backend
+
+    timeout-minutes: 10
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        cache: 'pip'
+        cache-dependency-path: backend/requirements.txt
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install --no-cache-dir -r requirements.txt
+
+    - name: Run tests
+      run: |
+        export PYTHONPATH="${PWD}:${PYTHONPATH}"
+        python -m pytest tests/ -v
