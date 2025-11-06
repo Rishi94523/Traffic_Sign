@@ -1,20 +1,20 @@
 /**
  * ImageUpload Component
- * Related Jira Tickets: RSCI-4, RSCI-16
+ * Related Jira Tickets: RSCI-4, RSCI-16, RSCI-16 (Drag-and-Drop)
  * 
- * Handles image file upload functionality
+ * Handles image file upload functionality with drag-and-drop support
  */
 
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import './ImageUpload.css'
 import { formatErrorMessage } from '../utils/errorMessages'
 
 function ImageUpload({ onUpload, onError, loading, setLoading }) {
   const fileInputRef = useRef(null)
+  const [isDragging, setIsDragging] = useState(false)
 
-  const handleFileChange = async (event) => {
-    const file = event.target.files[0]
-    
+  // Extract file validation and processing logic to be reusable
+  const processFile = (file) => {
     if (!file) {
       return
     }
@@ -60,9 +60,46 @@ function ImageUpload({ onUpload, onError, loading, setLoading }) {
     onUpload && onUpload({ file, preview: previewUrl, name: file.name, type: file.type, size: file.size })
   }
 
+  const handleFileChange = async (event) => {
+    const file = event.target.files[0]
+    processFile(file)
+  }
+
   const handleClick = () => {
     if (!loading) {
       fileInputRef.current?.click()
+    }
+  }
+
+  // Drag-and-drop handlers (RSCI-16)
+  const handleDragOver = (event) => {
+    event.preventDefault()
+    event.stopPropagation()
+    if (!loading) {
+      setIsDragging(true)
+    }
+  }
+
+  const handleDragLeave = (event) => {
+    event.preventDefault()
+    event.stopPropagation()
+    setIsDragging(false)
+  }
+
+  const handleDrop = (event) => {
+    event.preventDefault()
+    event.stopPropagation()
+    setIsDragging(false)
+
+    if (loading) {
+      return
+    }
+
+    const files = event.dataTransfer.files
+    if (files && files.length > 0) {
+      // Only process the first file
+      const file = files[0]
+      processFile(file)
     }
   }
 
@@ -78,13 +115,16 @@ function ImageUpload({ onUpload, onError, loading, setLoading }) {
       />
       
       <div 
-        className="upload-area"
+        className={`upload-area ${isDragging ? 'drag-over' : ''}`}
         onClick={handleClick}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
         style={{ opacity: loading ? 0.6 : 1, cursor: loading ? 'not-allowed' : 'pointer' }}
       >
         <div className="upload-icon">📤</div>
         <p className="upload-text">
-          {loading ? 'Processing...' : 'Click to upload or drag and drop'}
+          {loading ? 'Processing...' : isDragging ? 'Drop image here' : 'Click to upload or drag and drop'}
         </p>
         <p className="upload-hint">PNG or JPG only, up to 10MB</p>
       </div>

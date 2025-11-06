@@ -16,6 +16,13 @@
   background: #f8f9ff;
 }
 
+.upload-area.drag-over {
+  border-color: #667eea;
+  background: #e8ebff;
+  border-width: 4px;
+  transform: scale(1.02);
+}
+
 .upload-icon {
   font-size: 4rem;
   margin-bottom: 20px;
