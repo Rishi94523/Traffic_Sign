@@ -24,7 +24,7 @@ def test_upload_rejects_file_over_10mb():
     file_data = create_test_file("large.jpg", 11 * 1024 * 1024)
     
     response = client.post(
-        "/upload/",
+        "/api/upload/",
         files={"file": file_data}
     )
     
@@ -38,12 +38,12 @@ def test_upload_accepts_file_under_10mb():
     file_data = create_test_file("small.jpg", 5 * 1024 * 1024)
     
     response = client.post(
-        "/upload/",
+        "/api/upload/",
         files={"file": file_data}
     )
     
     # Should accept (even if other parts not implemented)
-    # Currently returns 501, but should not be 413 (size error)
+    # Currently returns 200, but should not be 413 (size error)
     assert response.status_code != 413
 
 
@@ -52,7 +52,7 @@ def test_upload_accepts_file_exactly_10mb():
     file_data = create_test_file("exact.jpg", 10 * 1024 * 1024)
     
     response = client.post(
-        "/upload/",
+        "/api/upload/",
         files={"file": file_data}
     )
     
