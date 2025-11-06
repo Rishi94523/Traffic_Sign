@@ -46,5 +46,5 @@ jobs:
     - name: Run tests
       run: |
         export PYTHONPATH="${PWD}:${PYTHONPATH}"
-        pytest tests/ -v
+        python -m pytest tests/ -v
 
