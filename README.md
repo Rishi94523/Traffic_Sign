@@ -126,13 +126,70 @@ Follow conventional commit format:
 
 ## 🧪 Testing
 
+### Backend Tests
+
 ```bash
+cd backend
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run tests
+pytest tests/ -v
+
+# Run tests with coverage
+pytest --cov=. --cov-report=html --cov-report=term tests/
+
+# View HTML coverage report
+# Open htmlcov/index.html in your browser
+```
+
+### Frontend Tests
+
+```bash
+cd frontend
+
+# Install dependencies
+npm install
+
 # Run tests
 npm test
 
 # Run tests with coverage
-npm run test:coverage
+npm run test:ci
 ```
+
+## 🔄 CI/CD Pipeline
+
+This project uses GitHub Actions for continuous integration and deployment.
+
+### What the CI Does
+
+- **Linting**: Checks code style and quality (ESLint for frontend)
+- **Testing**: Runs unit tests for both backend and frontend
+- **Coverage**: Generates test coverage reports (HTML and XML)
+- **Building**: Creates production-ready builds
+- **Deployment**: Packages application for deployment
+
+### Artifacts Produced
+
+- `backend-coverage`: Backend test coverage reports (HTML + XML)
+- `frontend-coverage`: Frontend test coverage reports
+- `frontend-build`: Production build of the frontend
+- `deploy-package`: Complete deployment package (ZIP file)
+
+### How Deployment Works
+
+1. On push to `main`, the deployment pipeline runs
+2. It downloads backend and frontend artifacts
+3. Creates a ZIP package with all necessary files
+4. Uploads the package as an artifact for manual or automated deployment
+
+**Deployment Options:**
+- **Manual**: Download `deploy-package.zip` from GitHub Actions and deploy manually
+- **Automated**: Configure webhooks for Render.com (backend) and Netlify/Vercel (frontend)
+
+For detailed CI/CD documentation, see [docs/CI_CD_SETUP.md](docs/CI_CD_SETUP.md)
 
 ## 📄 License
 
