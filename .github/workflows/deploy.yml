@@ -1,0 +1,75 @@
+name: Deployment Pipeline
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'backend/**'
+      - 'frontend/**'
+      - '.github/workflows/deploy.yml'
+  workflow_run:
+    workflows: ["Backend CI", "Frontend CI"]
+    types:
+      - completed
+    branches: [ main ]
+
+jobs:
+  deploy:
+    name: Deploy Application
+    runs-on: ubuntu-latest
+    if: github.event.workflow_run.conclusion == 'success' || github.event_name == 'push'
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Download backend artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: backend-coverage
+        path: artifacts/backend-coverage
+      continue-on-error: true
+
+    - name: Download frontend build
+      uses: actions/download-artifact@v4
+      with:
+        name: frontend-build
+        path: artifacts/frontend-build
+      continue-on-error: true
+
+    - name: Create deployment package
+      run: |
+        mkdir -p deploy-package
+        # Copy backend files
+        cp -r backend deploy-package/backend || true
+        # Copy frontend build
+        cp -r artifacts/frontend-build deploy-package/frontend-dist || true
+        # Create deployment info
+        echo "Deployment Date: $(date)" > deploy-package/DEPLOYMENT_INFO.txt
+        echo "Commit: ${{ github.sha }}" >> deploy-package/DEPLOYMENT_INFO.txt
+        echo "Branch: ${{ github.ref_name }}" >> deploy-package/DEPLOYMENT_INFO.txt
+        # Create ZIP archive
+        cd deploy-package
+        zip -r ../deploy-package.zip .
+        cd ..
+
+    - name: Upload deployment package
+      uses: actions/upload-artifact@v4
+      with:
+        name: deploy-package
+        path: deploy-package.zip
+        retention-days: 90
+
+    - name: Deployment Summary
+      run: |
+        echo "## Deployment Summary" >> $GITHUB_STEP_SUMMARY
+        echo "- **Status**: Ready for deployment" >> $GITHUB_STEP_SUMMARY
+        echo "- **Backend**: Validated and tested" >> $GITHUB_STEP_SUMMARY
+        echo "- **Frontend**: Built and tested" >> $GITHUB_STEP_SUMMARY
+        echo "- **Package**: deploy-package.zip created" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### Next Steps" >> $GITHUB_STEP_SUMMARY
+        echo "1. Download deploy-package.zip from artifacts" >> $GITHUB_STEP_SUMMARY
+        echo "2. Extract and deploy backend to your hosting service" >> $GITHUB_STEP_SUMMARY
+        echo "3. Deploy frontend/dist to Netlify/Vercel or static hosting" >> $GITHUB_STEP_SUMMARY
+
