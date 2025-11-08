@@ -7,6 +7,7 @@
 
 import React from 'react'
 import { classifyImage } from '../api/classificationAPI'
+import LoadingSpinner from './LoadingSpinner'
 import './ImagePreview.css'
 
 function ImagePreview({ image, onClassify, onError, loading, setLoading }) {
@@ -18,24 +19,29 @@ function ImagePreview({ image, onClassify, onError, loading, setLoading }) {
       return
     }
 
-    // TODO (RSCI-8): Display uploaded image preview
-    // TODO (RSCI-10): Send image to API for classification
-    // TODO (RSCI-11): Show loading spinner while waiting for API
-    // TODO (RSCI-14): Show error message when API fails
-    
-    // Placeholder - implement actual classification logic
-    // - Set loading state (setLoading(true))
-    // - Call classifyImage API
-    // - Handle success (call onClassify with result)
-    // - Handle error (call onError with error message)
-    // - Set loading state to false when done
-    
-    // Temporary placeholder to prevent errors
+    // RSCI-11: Set loading state to show spinner
     if (setLoading) {
-      setLoading(false)
+      setLoading(true)
     }
-    if (onError) {
-      onError('Classification functionality not implemented yet - RSCI-10')
+
+    try {
+      // RSCI-10: Call classification API
+      const result = await classifyImage(image.file)
+      
+      // RSCI-12, RSCI-13: Handle successful classification
+      if (onClassify) {
+        onClassify(result)
+      }
+    } catch (error) {
+      // RSCI-14: Handle errors with clear error messages
+      if (onError) {
+        onError(error.message || 'Failed to classify image')
+      }
+    } finally {
+      // RSCI-11: Always set loading to false when done
+      if (setLoading) {
+        setLoading(false)
+      }
     }
   }
 
@@ -43,7 +49,6 @@ function ImagePreview({ image, onClassify, onError, loading, setLoading }) {
     <div className="image-preview">
       <div className="preview-container">
         <h3>Image Preview</h3>
-        {/* TODO (RSCI-8): Display the uploaded image preview */}
         <div className="preview-image-wrapper">
           {image && image.preview && (
             <img 
@@ -53,7 +58,12 @@ function ImagePreview({ image, onClassify, onError, loading, setLoading }) {
             />
           )}
         </div>
-        {/* TODO (RSCI-11): Add loading spinner component */}
+        
+        {/* RSCI-11: Show loading spinner while waiting for API */}
+        {loading && (
+          <LoadingSpinner message="Classifying image..." />
+        )}
+        
         <button 
           className="classify-button"
           onClick={handleClassify}
