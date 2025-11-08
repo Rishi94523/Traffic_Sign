@@ -14,37 +14,22 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
  * Classify an image
  * Jira Ticket: RSCI-10
  * 
- * @param {File} imageFile - The image file to classify
+ * Sends validated image data directly to the /classify API endpoint.
+ * The endpoint validates the image (type and size) and returns classification results.
+ * 
+ * @param {File} imageFile - The image file to classify (validated image data)
  * @returns {Promise<Object>} Classification result with classification, confidence, and all_classes
  */
 export async function classifyImage(imageFile) {
   try {
-    // Step 1: Upload image to /api/upload/ endpoint
+    // Send validated image data directly to /classify endpoint
+    // The endpoint will validate the image and perform classification
     const formData = new FormData()
     formData.append('file', imageFile)
 
-    const uploadResponse = await fetch(`${API_BASE_URL}/api/upload/`, {
+    const classifyResponse = await fetch(`${API_BASE_URL}/api/classification/classify`, {
       method: 'POST',
       body: formData,
-    })
-
-    if (!uploadResponse.ok) {
-      const errorData = await uploadResponse.json().catch(() => ({}))
-      const errorMsg = errorData.detail || 'Failed to upload image'
-      throw new Error(formatErrorMessage(errorMsg))
-    }
-
-    const uploadResult = await uploadResponse.json()
-    
-    // Step 2: For now, use a mock image_id since the backend doesn't return one yet
-    // This will be updated when RSCI-10 is fully implemented
-    const imageId = uploadResult.image_id || `mock-${Date.now()}`
-
-    // Step 3: Call /api/classification/classify endpoint with image_id
-    // Note: Since the backend endpoint returns 501, we'll use the results endpoint as a workaround
-    // for testing the loading spinner functionality
-    const classifyResponse = await fetch(`${API_BASE_URL}/api/classification/results/${imageId}`, {
-      method: 'GET',
     })
 
     if (!classifyResponse.ok) {
@@ -53,15 +38,37 @@ export async function classifyImage(imageFile) {
       throw new Error(formatErrorMessage(errorMsg))
     }
 
-    // Step 4: Return classification result
+    // Return classification result
     const result = await classifyResponse.json()
     return result
   } catch (error) {
-    // Handle network errors
-    if (error.message && (error.message.includes('fetch') || error.message.includes('network'))) {
-      throw new Error(formatErrorMessage('Network error occurred. Please check your internet connection and try again.'))
-    }
+    // Better error handling - distinguish between backend connection issues and other errors
     console.error('Classification error:', error)
+    
+    // Check if it's a fetch/network error (backend not reachable)
+    if (error instanceof TypeError && error.message.includes('fetch')) {
+      // Backend server is likely not running or not accessible
+      throw new Error(
+        `Cannot connect to backend server at ${API_BASE_URL}. ` +
+        `Please ensure the backend server is running on port 8000. ` +
+        `You can start it with: cd backend && uvicorn app:app --reload`
+      )
+    }
+    
+    // Check for other network-related errors
+    if (error.message && (
+      error.message.includes('Failed to fetch') || 
+      error.message.includes('NetworkError') ||
+      error.message.includes('Network request failed')
+    )) {
+      throw new Error(
+        `Cannot connect to backend server at ${API_BASE_URL}. ` +
+        `Please check if the backend server is running. ` +
+        `If you have a stable internet connection, the backend may not be started.`
+      )
+    }
+    
+    // Re-throw other errors (validation errors, etc.)
     throw error
   }
 }
@@ -83,11 +90,27 @@ export async function getClassificationResult(imageId) {
 
     return await response.json()
   } catch (error) {
-    // RSCI-9: Handle network errors
-    if (error.message && (error.message.includes('fetch') || error.message.includes('network'))) {
-      throw new Error(formatErrorMessage('Network error occurred. Please check your internet connection and try again.'))
-    }
     console.error('Get classification result error:', error)
+    
+    // Check if it's a fetch/network error (backend not reachable)
+    if (error instanceof TypeError && error.message.includes('fetch')) {
+      throw new Error(
+        `Cannot connect to backend server at ${API_BASE_URL}. ` +
+        `Please ensure the backend server is running on port 8000.`
+      )
+    }
+    
+    if (error.message && (
+      error.message.includes('Failed to fetch') || 
+      error.message.includes('NetworkError') ||
+      error.message.includes('Network request failed')
+    )) {
+      throw new Error(
+        `Cannot connect to backend server at ${API_BASE_URL}. ` +
+        `Please check if the backend server is running.`
+      )
+    }
+    
     throw error
   }
 }
@@ -108,12 +131,50 @@ export async function getClassificationHistory() {
 
     return await response.json()
   } catch (error) {
-    // RSCI-9: Handle network errors
-    if (error.message && (error.message.includes('fetch') || error.message.includes('network'))) {
-      throw new Error(formatErrorMessage('Network error occurred. Please check your internet connection and try again.'))
-    }
     console.error('Get classification history error:', error)
+    
+    // Check if it's a fetch/network error (backend not reachable)
+    if (error instanceof TypeError && error.message.includes('fetch')) {
+      throw new Error(
+        `Cannot connect to backend server at ${API_BASE_URL}. ` +
+        `Please ensure the backend server is running on port 8000.`
+      )
+    }
+    
+    if (error.message && (
+      error.message.includes('Failed to fetch') || 
+      error.message.includes('NetworkError') ||
+      error.message.includes('Network request failed')
+    )) {
+      throw new Error(
+        `Cannot connect to backend server at ${API_BASE_URL}. ` +
+        `Please check if the backend server is running.`
+      )
+    }
+    
     throw error
+  }
+}
+
+/**
+ * Check if backend server is running
+ * @returns {Promise<boolean>} True if backend is accessible
+ */
+export async function checkBackendHealth() {
+  try {
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 5000) // 5 second timeout
+    
+    const response = await fetch(`${API_BASE_URL}/health`, {
+      method: 'GET',
+      signal: controller.signal
+    })
+    
+    clearTimeout(timeoutId)
+    return response.ok
+  } catch (error) {
+    console.error('Backend health check failed:', error)
+    return false
   }
 }
 
