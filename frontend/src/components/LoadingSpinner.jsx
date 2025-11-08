@@ -9,14 +9,12 @@ import React from 'react'
 import './LoadingSpinner.css'
 
 function LoadingSpinner({ message = 'Loading...' }) {
-  // TODO (RSCI-11): Implement loading spinner UI
-  // - Display a spinner/loading indicator
-  // - Show optional loading message
-  
   return (
-    <div className="loading-spinner">
-      {/* TODO: Add spinner component here */}
-      <p>{message}</p>
+    <div className="loading-spinner" data-testid="loading-spinner">
+      <div className="spinner-container">
+        <div className="spinner"></div>
+        <p className="loading-message">{message}</p>
+      </div>
     </div>
   )
 }
