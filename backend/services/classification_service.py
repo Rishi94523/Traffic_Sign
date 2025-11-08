@@ -49,10 +49,45 @@ class StubbedClassificationService:
             - confidence: confidence score (float 0-1)
             - all_classes: list of all predictions with confidence scores
         """
-        # TODO (RSCI-10): Implement stubbed model classification
-        # - Use stubbed/fake model to generate predictions
-        # - Return format: {"classification": "Sign Name", "confidence": 0.95, "all_classes": [...]}
-        pass
+        # Stubbed model classification - generates fake predictions
+        # This will be replaced with actual ML model integration in RSCI-10
+        
+        if not image_data or len(image_data) == 0:
+            raise ValueError("Image data is empty")
+        
+        # Generate fake predictions with confidence scores
+        num_predictions = min(5, len(self.TRAFFIC_SIGNS))
+        selected_signs = random.sample(self.TRAFFIC_SIGNS, num_predictions)
+        
+        # Create predictions with confidence scores (summing to ~1.0)
+        all_classes = []
+        remaining_confidence = 1.0
+        
+        for i, sign in enumerate(selected_signs):
+            if i == num_predictions - 1:
+                # Last prediction gets remaining confidence
+                confidence = remaining_confidence
+            else:
+                # Random confidence between 0.05 and remaining_confidence
+                confidence = random.uniform(0.05, min(0.4, remaining_confidence * 0.8))
+                remaining_confidence -= confidence
+            
+            all_classes.append({
+                "sign": sign,
+                "confidence": round(confidence, 3)
+            })
+        
+        # Sort by confidence (descending)
+        all_classes.sort(key=lambda x: x["confidence"], reverse=True)
+        
+        # Get top prediction
+        top_prediction = all_classes[0]
+        
+        return {
+            "classification": top_prediction["sign"],
+            "confidence": top_prediction["confidence"],
+            "all_classes": all_classes
+        }
     
     def get_classification_history(self) -> List[Dict]:
         """

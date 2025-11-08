@@ -34,19 +34,38 @@ export async function uploadImage(imageFile) {
     return await response.json()
   } catch (error) {
     // RSCI-9: Handle network errors and format error messages
+    console.error('Upload error:', error)
+    
+    // Check if it's a fetch/network error (backend not reachable)
+    if (error instanceof TypeError && error.message.includes('fetch')) {
+      // Backend server is likely not running or not accessible
+      throw new Error(
+        `Cannot connect to backend server at ${API_BASE_URL}. ` +
+        `Please ensure the backend server is running on port 8000. ` +
+        `You can start it with: cd backend && uvicorn app:app --reload`
+      )
+    }
+    
+    // Check for other network-related errors
+    if (error.message && (
+      error.message.includes('Failed to fetch') || 
+      error.message.includes('NetworkError') ||
+      error.message.includes('Network request failed')
+    )) {
+      throw new Error(
+        `Cannot connect to backend server at ${API_BASE_URL}. ` +
+        `Please check if the backend server is running. ` +
+        `If you have a stable internet connection, the backend may not be started.`
+      )
+    }
+    
+    // Re-throw other errors (validation errors, etc.)
     if (error.message) {
-      // Check if it's a network error
-      const errorLower = error.message.toLowerCase()
-      if (errorLower.includes('network') || 
-          errorLower.includes('fetch') || 
-          errorLower.includes('connection') ||
-          errorLower.includes('failed to fetch')) {
-        throw new Error(formatErrorMessage('Network error occurred during upload. Please check your internet connection and try again.'))
-      }
       throw new Error(formatErrorMessage(error.message))
     }
-    // Generic network error
-    throw new Error(formatErrorMessage('Network error occurred during upload. Please check your internet connection and try again.'))
+    
+    // Generic error fallback
+    throw new Error(formatErrorMessage('An unexpected error occurred during upload.'))
   }
 }
 
