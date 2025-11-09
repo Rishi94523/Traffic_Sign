@@ -3,7 +3,6 @@ import ImageUpload from './components/ImageUpload'
 import ImagePreview from './components/ImagePreview'
 import ClassificationResult from './components/ClassificationResult'
 import ErrorDisplay from './components/ErrorDisplay'
-import LoadingSpinner from './components/LoadingSpinner'
 import './App.css'
 
 function App() {

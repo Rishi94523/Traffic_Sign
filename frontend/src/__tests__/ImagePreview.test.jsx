@@ -3,7 +3,6 @@
  * Related Jira Tickets: RSCI-8, RSCI-11
  */
 
-import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import '@testing-library/jest-dom'
@@ -81,7 +80,7 @@ test('shows loading spinner when loading is true', () => {
   const spinner = screen.getByTestId('loading-spinner')
   expect(spinner).toBeInTheDocument()
   
-  const loadingMessage = screen.getByText('Classifying image...')
+  const loadingMessage = screen.getByText('PROCESSING IMAGE...')
   expect(loadingMessage).toBeInTheDocument()
 })
 
@@ -121,7 +120,7 @@ test('disables classify button when loading', () => {
     />
   )
 
-  const button = screen.getByRole('button', { name: /classifying/i })
+  const button = screen.getByRole('button', { name: /CLASSIFYING.../i })
   expect(button).toBeDisabled()
 })
 
