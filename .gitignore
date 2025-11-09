@@ -59,6 +59,7 @@ coverage/
 # Logs
 *.log
 logs/
+.vercel/
 
 # OS
 Thumbs.db

@@ -8,7 +8,30 @@
 
 import { formatErrorMessage } from '../utils/errorMessages'
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+const DEFAULT_LOCAL_API = 'http://localhost:8000'
+
+function normalizeBaseUrl() {
+  const envUrl = import.meta.env.VITE_API_URL
+
+  if (envUrl && typeof envUrl === 'string' && envUrl.trim().length > 0) {
+    return envUrl.replace(/\/$/, '')
+  }
+
+  return import.meta.env.PROD ? '' : DEFAULT_LOCAL_API
+}
+
+const API_BASE_URL = normalizeBaseUrl()
+
+const DISPLAY_API_URL =
+  API_BASE_URL || (typeof window !== 'undefined' ? window.location.origin : 'production API')
+
+function buildApiUrl(path) {
+  if (!path.startsWith('/')) {
+    return `${API_BASE_URL}/${path}`
+  }
+
+  return `${API_BASE_URL}${path}`
+}
 
 /**
  * Classify an image
@@ -27,7 +50,7 @@ export async function classifyImage(imageFile) {
     const formData = new FormData()
     formData.append('file', imageFile)
 
-    const classifyResponse = await fetch(`${API_BASE_URL}/api/classification/classify`, {
+    const classifyResponse = await fetch(buildApiUrl('/api/classification/classify'), {
       method: 'POST',
       body: formData,
     })
@@ -49,7 +72,7 @@ export async function classifyImage(imageFile) {
     if (error instanceof TypeError && error.message.includes('fetch')) {
       // Backend server is likely not running or not accessible
       throw new Error(
-        `Cannot connect to backend server at ${API_BASE_URL}. ` +
+        `Cannot connect to backend server at ${DISPLAY_API_URL}. ` +
         `Please ensure the backend server is running on port 8000. ` +
         `You can start it with: cd backend && uvicorn app:app --reload`
       )
@@ -62,7 +85,7 @@ export async function classifyImage(imageFile) {
       error.message.includes('Network request failed')
     )) {
       throw new Error(
-        `Cannot connect to backend server at ${API_BASE_URL}. ` +
+        `Cannot connect to backend server at ${DISPLAY_API_URL}. ` +
         `Please check if the backend server is running. ` +
         `If you have a stable internet connection, the backend may not be started.`
       )
@@ -80,7 +103,7 @@ export async function classifyImage(imageFile) {
  */
 export async function getClassificationResult(imageId) {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/classification/results/${imageId}`)
+    const response = await fetch(buildApiUrl(`/api/classification/results/${imageId}`))
     
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}))
@@ -95,7 +118,7 @@ export async function getClassificationResult(imageId) {
     // Check if it's a fetch/network error (backend not reachable)
     if (error instanceof TypeError && error.message.includes('fetch')) {
       throw new Error(
-        `Cannot connect to backend server at ${API_BASE_URL}. ` +
+        `Cannot connect to backend server at ${DISPLAY_API_URL}. ` +
         `Please ensure the backend server is running on port 8000.`
       )
     }
@@ -106,7 +129,7 @@ export async function getClassificationResult(imageId) {
       error.message.includes('Network request failed')
     )) {
       throw new Error(
-        `Cannot connect to backend server at ${API_BASE_URL}. ` +
+        `Cannot connect to backend server at ${DISPLAY_API_URL}. ` +
         `Please check if the backend server is running.`
       )
     }
@@ -121,7 +144,7 @@ export async function getClassificationResult(imageId) {
  */
 export async function getClassificationHistory() {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/classification/history`)
+    const response = await fetch(buildApiUrl('/api/classification/history'))
     
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}))
@@ -136,7 +159,7 @@ export async function getClassificationHistory() {
     // Check if it's a fetch/network error (backend not reachable)
     if (error instanceof TypeError && error.message.includes('fetch')) {
       throw new Error(
-        `Cannot connect to backend server at ${API_BASE_URL}. ` +
+        `Cannot connect to backend server at ${DISPLAY_API_URL}. ` +
         `Please ensure the backend server is running on port 8000.`
       )
     }
@@ -147,7 +170,7 @@ export async function getClassificationHistory() {
       error.message.includes('Network request failed')
     )) {
       throw new Error(
-        `Cannot connect to backend server at ${API_BASE_URL}. ` +
+        `Cannot connect to backend server at ${DISPLAY_API_URL}. ` +
         `Please check if the backend server is running.`
       )
     }
@@ -165,7 +188,7 @@ export async function checkBackendHealth() {
     const controller = new AbortController()
     const timeoutId = setTimeout(() => controller.abort(), 5000) // 5 second timeout
     
-    const response = await fetch(`${API_BASE_URL}/health`, {
+    const response = await fetch(buildApiUrl('/api/health'), {
       method: 'GET',
       signal: controller.signal
     })
