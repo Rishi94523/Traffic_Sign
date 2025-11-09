@@ -39,6 +39,22 @@ python app.py
 
 The API will be available at `http://localhost:8000`
 
+### Gemini Integration (Optional)
+
+To enable real road-sign classification using Google Gemini 2.0 Flash, configure
+the `GEMINI_API` environment variable before starting the server:
+
+```bash
+# macOS / Linux
+export GEMINI_API="your-api-key-here"
+
+# Windows (PowerShell)
+$Env:GEMINI_API = "your-api-key-here"
+```
+
+If no API key is provided, the backend will fall back to the stubbed
+classification service with mock predictions.
+
 ### API Documentation
 
 Once the server is running, visit:

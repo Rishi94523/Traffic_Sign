@@ -193,6 +193,23 @@ This project uses GitHub Actions for continuous integration and deployment.
 
 For detailed CI/CD documentation, see [docs/CI_CD_SETUP.md](docs/CI_CD_SETUP.md)
 
+## ⚙️ Environment Variables
+
+The backend supports optional integration with Google Gemini (model `gemini-2.0-flash`)
+for real road-sign classification. To enable it, set the `GEMINI_API` environment
+variable before starting the backend:
+
+```bash
+# macOS / Linux
+export GEMINI_API="your-api-key-here"
+
+# Windows PowerShell
+$Env:GEMINI_API = "your-api-key-here"
+```
+
+If the API key is not provided, the backend falls back to stubbed predictions so the
+frontend continues to function for development and testing.
+
 ## 📄 License
 
 This project is developed for educational purposes as part of the PES University UE23CS341A curriculum.

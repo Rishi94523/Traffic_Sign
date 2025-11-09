@@ -52,7 +52,9 @@ async def classify_image(file: UploadFile = File(...)):
             raise HTTPException(status_code=400, detail=error_msg)
         
         # Classify image using classification service
-        result = classification_service.classify(image_data)
+        result = classification_service.classify(
+            image_data, mime_type=file.content_type
+        )
         
         # Return classification results
         return JSONResponse(
