@@ -1,6 +1,6 @@
 /**
- * ImageUpload Component
- * Related Jira Tickets: RSCI-4, RSCI-16, RSCI-16 (Drag-and-Drop)
+ * ImageUpload Component - Brutalist Design
+ * Related Jira Tickets: RSCI-4, RSCI-16
  * 
  * Handles image file upload functionality with drag-and-drop support
  */
@@ -13,28 +13,21 @@ function ImageUpload({ onUpload, onError, loading, setLoading }) {
   const fileInputRef = useRef(null)
   const [isDragging, setIsDragging] = useState(false)
 
-  // Extract file validation and processing logic to be reusable
   const processFile = (file) => {
     if (!file) {
       return
     }
 
-    // Basic client-side validation and preview generation (RSCI-4, RSCI-8)
-    // RSCI-6: Restrict to JPG and PNG only
     const allowedTypes = ['image/jpeg', 'image/png']
     const maxSizeBytes = 10 * 1024 * 1024 // 10MB
-    const minSizeBytes = 1 // Minimum file size
+    const minSizeBytes = 1
 
-    // RSCI-9: Clear error messages for invalid uploads
-    
-    // Check for missing filename
     if (!file.name || file.name.trim() === '') {
       const errorMsg = formatErrorMessage('Filename is required. Please ensure your file has a name.')
       onError && onError(errorMsg)
       return
     }
     
-    // Check for empty file
     if (file.size < minSizeBytes) {
       const errorMsg = formatErrorMessage('The uploaded file is empty. Please upload a valid image file.')
       onError && onError(errorMsg)
@@ -54,9 +47,7 @@ function ImageUpload({ onUpload, onError, loading, setLoading }) {
       return
     }
 
-    // Create a preview URL so ImagePreview can display a thumbnail
     const previewUrl = URL.createObjectURL(file)
-
     onUpload && onUpload({ file, preview: previewUrl, name: file.name, type: file.type, size: file.size })
   }
 
@@ -71,7 +62,6 @@ function ImageUpload({ onUpload, onError, loading, setLoading }) {
     }
   }
 
-  // Drag-and-drop handlers (RSCI-16)
   const handleDragOver = (event) => {
     event.preventDefault()
     event.stopPropagation()
@@ -97,7 +87,6 @@ function ImageUpload({ onUpload, onError, loading, setLoading }) {
 
     const files = event.dataTransfer.files
     if (files && files.length > 0) {
-      // Only process the first file
       const file = files[0]
       processFile(file)
     }
@@ -114,23 +103,36 @@ function ImageUpload({ onUpload, onError, loading, setLoading }) {
         disabled={loading}
       />
       
-      <div 
-        className={`upload-area ${isDragging ? 'drag-over' : ''}`}
-        onClick={handleClick}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
-        style={{ opacity: loading ? 0.6 : 1, cursor: loading ? 'not-allowed' : 'pointer' }}
-      >
-        <div className="upload-icon">📤</div>
-        <p className="upload-text">
-          {loading ? 'Processing...' : isDragging ? 'Drop image here' : 'Click to upload or drag and drop'}
-        </p>
-        <p className="upload-hint">PNG or JPG only, up to 10MB</p>
+      {/* Upload Area */}
+      <div className="mb-6">
+        <div 
+          className={`upload-area ${isDragging ? 'drag-over' : ''}`}
+          onClick={handleClick}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+          style={{ opacity: loading ? 0.6 : 1, cursor: loading ? 'not-allowed' : 'pointer' }}
+        >
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <div className="upload-icon">📁</div>
+            <div>
+              <div className="upload-text">
+                {loading ? 'PROCESSING...' : isDragging ? 'DROP IMAGE HERE' : 'DRAG & DROP IMAGE HERE'}
+              </div>
+              <div className="upload-hint">OR CLICK TO UPLOAD</div>
+            </div>
+          </div>
+        </div>
+        
+        {/* File Type Notice */}
+        <div className="upload-notice">
+          <p className="upload-notice-text">
+            SUPPORTED FORMATS: JPG, JPEG, PNG (MAX 10 MB)
+          </p>
+        </div>
       </div>
     </div>
   )
 }
 
 export default ImageUpload
-

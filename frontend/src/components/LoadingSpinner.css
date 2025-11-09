@@ -1,37 +1,53 @@
+/* BRUTALIST LOADING SPINNER STYLES */
+
 .loading-spinner {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 20px;
-  width: 100%;
+  text-align: center;
+  padding: 3rem 0;
 }
 
 .spinner-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 16px;
+  gap: 1rem;
 }
 
-.spinner {
-  width: 50px;
-  height: 50px;
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid #3498db;
+.loading-spinner .spinner {
+  border: 4px solid #CCCCCC;
+  border-top: 4px solid #000000;
   border-radius: 50%;
+  width: 40px;
+  height: 40px;
   animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  margin: 0 auto;
 }
 
 .loading-message {
-  color: #666;
-  font-size: 14px;
-  margin: 0;
-  text-align: center;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #000000;
 }
 
+.progress-bar-container {
+  margin-top: 1rem;
+  width: 100%;
+  background-color: #CCCCCC;
+  border: 2px solid #000000;
+  border-radius: 9999px;
+  height: 0.5rem;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  background: linear-gradient(90deg, #0000FF 0%, #FFFF00 50%, #FF0000 100%);
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.5s ease-in-out;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
