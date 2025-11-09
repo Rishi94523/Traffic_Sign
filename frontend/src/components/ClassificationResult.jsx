@@ -1,99 +1,107 @@
 /**
- * ClassificationResult Component
+ * ClassificationResult Component - Brutalist Design
  * Related Jira Tickets: RSCI-12, RSCI-13
  * 
- * Displays classification results with confidence scores.
- * Shows the predicted sign name prominently so users can understand the classification result.
+ * Displays classification results with confidence scores in brutalist style
  */
 
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import './ClassificationResult.css'
 
 function ClassificationResult({ result }) {
+  const [processingTime, setProcessingTime] = useState(null)
+  const [confidenceBarWidth, setConfidenceBarWidth] = useState(0)
+
+  useEffect(() => {
+    // Simulate processing time
+    const startTime = Date.now()
+    const timer = setTimeout(() => {
+      const elapsed = ((Date.now() - startTime) / 1000).toFixed(2)
+      setProcessingTime(`PROCESSED IN ${elapsed}S`)
+    }, 100)
+
+    // Animate confidence bar
+    const confidence = result?.confidence || 0
+    const targetWidth = (confidence * 100).toFixed(1)
+    setTimeout(() => {
+      setConfidenceBarWidth(targetWidth)
+    }, 300)
+
+    return () => {
+      clearTimeout(timer)
+    }
+  }, [result])
+
   if (!result) {
     return null
   }
 
-  // Extract classification data from result
-  const classification = result.classification || 'Unknown'
+  const classification = result.classification || 'UNKNOWN'
   const confidence = result.confidence || 0
   const allClasses = result.all_classes || []
   
-  // Convert confidence to percentage
   const confidencePercentage = (confidence * 100).toFixed(1)
-  
-  // RSCI-13: Determine confidence level and styling
-  const getConfidenceLevel = (conf) => {
-    if (conf >= 0.8) return { level: 'high', label: 'High Confidence', icon: '✓', colorClass: 'confidence-high' }
-    if (conf >= 0.5) return { level: 'medium', label: 'Medium Confidence', icon: '⚠', colorClass: 'confidence-medium' }
-    return { level: 'low', label: 'Low Confidence', icon: '⚠', colorClass: 'confidence-low' }
-  }
-  
-  const confidenceInfo = getConfidenceLevel(confidence)
 
   return (
     <div className="classification-result">
-      <div className="result-container">
-        <h3>Classification Result</h3>
-        
-        {/* RSCI-12: Display predicted sign name prominently */}
-        <div className="primary-result">
-          <div className="result-label">Predicted Sign</div>
-          <div className="result-value">{classification}</div>
-          
-          {/* RSCI-13: Display confidence score prominently with level indicator */}
-          <div className={`confidence-section ${confidenceInfo.colorClass}`}>
-            <div className="confidence-header">
-              <div className="confidence-info">
-                <div className="confidence-label">Model Confidence</div>
-                <div className="confidence-percentage">{confidencePercentage}%</div>
-              </div>
-              <div className={`confidence-badge ${confidenceInfo.colorClass}`}>
-                <span className="confidence-icon">{confidenceInfo.icon}</span>
-                <span className="confidence-level-text">{confidenceInfo.label}</span>
-              </div>
-            </div>
-            <div className="confidence-bar-wrapper">
-              <div className={`confidence-bar ${confidenceInfo.colorClass}`}>
-                <div 
-                  className={`confidence-fill ${confidenceInfo.colorClass}`}
-                  style={{ width: `${confidencePercentage}%` }}
-                />
-              </div>
-              <div className="confidence-help-text">
-                This indicates how confident the model is about this prediction. Higher confidence means more reliable results.
-              </div>
-            </div>
-          </div>
+      <div className="brutal-card">
+        {/* Results Header */}
+        <div className="brutal-card-header">
+          <h2 className="brutal-card-title">CLASSIFICATION RESULTS</h2>
+          {processingTime && (
+            <div className="brutal-processing-time">{processingTime}</div>
+          )}
         </div>
 
-        {/* Optional: Display all predictions with confidence scores */}
-        {allClasses && allClasses.length > 0 && (
-          <div className="all-classes">
-            <h4>All Predictions</h4>
-            <div className="predictions-list">
-              {allClasses.map((prediction, index) => {
-                const predConfidence = (prediction.confidence * 100).toFixed(1)
-                return (
-                  <div key={index} className="prediction-item">
-                    <div className="prediction-sign">{prediction.sign}</div>
-                    <div className="prediction-bar">
-                      <div 
-                        className="prediction-fill" 
-                        style={{ width: `${predConfidence}%` }}
-                      />
-                    </div>
-                    <div className="prediction-confidence">{predConfidence}%</div>
-                  </div>
-                )
-              })}
+        {/* Result Card */}
+        <div className="brutal-result-card">
+          <div className="brutal-result-grid">
+            {/* Predicted Sign */}
+            <div className="brutal-predicted-sign">
+              <div className="brutal-result-label">PREDICTED SIGN</div>
+              <div className="brutal-sign-value">{classification.toUpperCase()}</div>
+            </div>
+
+            {/* Confidence Score */}
+            <div className="brutal-confidence-card">
+              <div className="brutal-result-label">CONFIDENCE SCORE</div>
+              <div className="brutal-confidence-value">{confidencePercentage}%</div>
+              <div className="brutal-confidence-bar-container">
+                <div 
+                  className="brutal-confidence-bar-fill"
+                  style={{ width: `${confidenceBarWidth}%` }}
+                ></div>
+              </div>
             </div>
           </div>
-        )}
+
+          {/* Detailed Breakdown */}
+          {allClasses && allClasses.length > 0 && (
+            <div className="brutal-detailed-results">
+              <h3 className="brutal-details-title">DETAILED BREAKDOWN</h3>
+              <div className="brutal-predictions-list">
+                {allClasses.map((prediction, index) => {
+                  const predConfidence = (prediction.confidence * 100).toFixed(1)
+                  return (
+                    <div key={index} className="brutal-prediction-item">
+                      <div className="brutal-prediction-sign">{prediction.sign.toUpperCase()}</div>
+                      <div className="brutal-prediction-bar-container">
+                        <div 
+                          className="brutal-prediction-bar-fill"
+                          style={{ width: `${predConfidence}%` }}
+                        ></div>
+                      </div>
+                      <div className="brutal-prediction-confidence">{predConfidence}%</div>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )
 }
 
 export default ClassificationResult
-

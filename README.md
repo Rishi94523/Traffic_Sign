@@ -112,17 +112,19 @@ Follow conventional commit format:
 - `test:` Test-related changes
 
 ### Code Review Process
-1. Create feature branch from `develop`
+1. Create feature branch from `main`
 2. Make changes and commit
-3. Create Pull Request to `develop`
+3. Create Pull Request to `main`
 4. Request review from team members
 5. Merge after approval
 
 ## 📚 Documentation
 
-- [API Documentation](docs/api.md)
-- [User Guide](docs/user-guide.md)
-- [Developer Guide](docs/developer-guide.md)
+- [Setup Instructions](docs/setup_instructions.md)
+- [Sprint Summary](docs/sprint_summary.md)
+- [CI/CD Setup](docs/CI_CD_SETUP.md)
+- [Backend README](backend/README.md)
+- [Frontend README](frontend/README.md)
 
 ## 🧪 Testing
 

@@ -108,7 +108,7 @@ test('accepts file via drag and drop', async () => {
 
   render(<ImageUpload onUpload={onUpload} onError={onError} loading={false} setLoading={() => {}} />)
 
-  const uploadArea = screen.getByText(/Click to upload or drag and drop/i).closest('.upload-area')
+  const uploadArea = screen.getByText(/DRAG & DROP IMAGE HERE/i).closest('.upload-area')
   const file = createFile('drag-test.jpg', 'image/jpeg', 1024 * 1024) // 1MB
 
   const dataTransfer = createMockDataTransfer([file])
@@ -132,7 +132,7 @@ test('rejects invalid file type via drag and drop', async () => {
 
   render(<ImageUpload onUpload={onUpload} onError={onError} loading={false} setLoading={() => {}} />)
 
-  const uploadArea = screen.getByText(/Click to upload or drag and drop/i).closest('.upload-area')
+  const uploadArea = screen.getByText(/DRAG & DROP IMAGE HERE/i).closest('.upload-area')
   const file = createFile('invalid.pdf', 'application/pdf', 1024 * 1024)
 
   const dataTransfer = createMockDataTransfer([file])
@@ -154,7 +154,7 @@ test('rejects file larger than 10MB via drag and drop', async () => {
 
   render(<ImageUpload onUpload={onUpload} onError={onError} loading={false} setLoading={() => {}} />)
 
-  const uploadArea = screen.getByText(/Click to upload or drag and drop/i).closest('.upload-area')
+  const uploadArea = screen.getByText(/DRAG & DROP IMAGE HERE/i).closest('.upload-area')
   const bigBytes = 10 * 1024 * 1024 + 1 // 10MB + 1 byte
   const file = createFile('large-drag.jpg', 'image/jpeg', bigBytes)
 
@@ -177,7 +177,7 @@ test('processes only first file when multiple files are dropped', async () => {
 
   render(<ImageUpload onUpload={onUpload} onError={onError} loading={false} setLoading={() => {}} />)
 
-  const uploadArea = screen.getByText(/Click to upload or drag and drop/i).closest('.upload-area')
+  const uploadArea = screen.getByText(/DRAG & DROP IMAGE HERE/i).closest('.upload-area')
   const file1 = createFile('first.jpg', 'image/jpeg', 1024 * 1024)
   const file2 = createFile('second.jpg', 'image/jpeg', 1024 * 1024)
 
@@ -199,7 +199,7 @@ test('shows drag-over visual feedback', async () => {
 
   render(<ImageUpload onUpload={onUpload} onError={onError} loading={false} setLoading={() => {}} />)
 
-  const uploadArea = screen.getByText(/Click to upload or drag and drop/i).closest('.upload-area')
+  const uploadArea = screen.getByText(/DRAG & DROP IMAGE HERE/i).closest('.upload-area')
   
   // Simulate drag over
   await act(async () => {
@@ -210,7 +210,7 @@ test('shows drag-over visual feedback', async () => {
   })
 
   expect(uploadArea.classList.contains('drag-over')).toBe(true)
-  expect(screen.getByText(/Drop image here/i)).toBeInTheDocument()
+  expect(screen.getByText(/DROP IMAGE HERE/i)).toBeInTheDocument()
 })
 
 test('does not process drop when loading', async () => {
@@ -219,7 +219,7 @@ test('does not process drop when loading', async () => {
 
   render(<ImageUpload onUpload={onUpload} onError={onError} loading={true} setLoading={() => {}} />)
 
-  const uploadArea = screen.getByText(/Processing.../i).closest('.upload-area')
+  const uploadArea = screen.getByText(/PROCESSING.../i).closest('.upload-area')
   const file = createFile('test.jpg', 'image/jpeg', 1024 * 1024)
 
   const dataTransfer = createMockDataTransfer([file])

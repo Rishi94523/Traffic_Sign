@@ -1,5 +1,5 @@
 /**
- * ImagePreview Component
+ * ImagePreview Component - Brutalist Design
  * Related Jira Ticket: RSCI-8
  * 
  * Displays uploaded image preview and triggers classification
@@ -10,7 +10,7 @@ import { classifyImage } from '../api/classificationAPI'
 import LoadingSpinner from './LoadingSpinner'
 import './ImagePreview.css'
 
-function ImagePreview({ image, onClassify, onError, loading, setLoading }) {
+function ImagePreview({ image, onClassify, onError, loading, setLoading, onReset }) {
   const handleClassify = async () => {
     if (!image || !image.file) {
       if (onError) {
@@ -19,26 +19,21 @@ function ImagePreview({ image, onClassify, onError, loading, setLoading }) {
       return
     }
 
-    // RSCI-11: Set loading state to show spinner
     if (setLoading) {
       setLoading(true)
     }
 
     try {
-      // RSCI-10: Call classification API
       const result = await classifyImage(image.file)
       
-      // RSCI-12, RSCI-13: Handle successful classification
       if (onClassify) {
         onClassify(result)
       }
     } catch (error) {
-      // RSCI-14: Handle errors with clear error messages
       if (onError) {
         onError(error.message || 'Failed to classify image')
       }
     } finally {
-      // RSCI-11: Always set loading to false when done
       if (setLoading) {
         setLoading(false)
       }
@@ -47,8 +42,9 @@ function ImagePreview({ image, onClassify, onError, loading, setLoading }) {
 
   return (
     <div className="image-preview">
+      {/* Image Preview */}
       <div className="preview-container">
-        <h3>Image Preview</h3>
+        <h3 className="preview-title">IMAGE PREVIEW</h3>
         <div className="preview-image-wrapper">
           {image && image.preview && (
             <img 
@@ -58,18 +54,28 @@ function ImagePreview({ image, onClassify, onError, loading, setLoading }) {
             />
           )}
         </div>
-        
-        {/* RSCI-11: Show loading spinner while waiting for API */}
-        {loading && (
-          <LoadingSpinner message="Classifying image..." />
-        )}
-        
+      </div>
+
+      {/* Loading Indicator */}
+      {loading && (
+        <LoadingSpinner message="PROCESSING IMAGE..." />
+      )}
+
+      {/* Upload Controls */}
+      <div className="preview-controls">
         <button 
           className="classify-button"
           onClick={handleClassify}
           disabled={loading}
         >
-          {loading ? 'Classifying...' : 'Classify Image'}
+          {loading ? 'CLASSIFYING...' : 'CLASSIFY IMAGE'}
+        </button>
+        <button 
+          className="reset-button"
+          onClick={onReset}
+          disabled={loading}
+        >
+          RESET / NEW UPLOAD
         </button>
       </div>
     </div>
@@ -77,4 +83,3 @@ function ImagePreview({ image, onClassify, onError, loading, setLoading }) {
 }
 
 export default ImagePreview
-

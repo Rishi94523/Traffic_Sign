@@ -1,243 +1,200 @@
+/* BRUTALIST CLASSIFICATION RESULT STYLES */
+
 .classification-result {
-  width: 100%;
+  margin-bottom: 3rem;
 }
 
-.result-container {
-  background: white;
-  border-radius: 12px;
-  padding: 30px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+.brutal-card {
+  background-color: #FFFFFF;
+  border: 4px solid #000000;
+  padding: 2rem;
+  box-shadow: 12px 12px 0px 0px #000000;
 }
 
-.result-container h3 {
-  margin-bottom: 25px;
-  color: #333;
-  font-size: 1.5rem;
-}
-
-.primary-result {
-  margin-bottom: 30px;
-  padding: 20px;
-  background: #f8f9ff;
-  border-radius: 8px;
-}
-
-.result-label {
-  font-size: 0.9rem;
-  color: #666;
-  margin-bottom: 8px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.result-value {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #667eea;
-  margin-bottom: 15px;
-}
-
-/* RSCI-13: Enhanced confidence score display */
-.confidence-section {
-  margin-top: 20px;
-  padding: 20px;
-  background: #f8f9ff;
-  border-radius: 8px;
-  border-left: 4px solid #667eea;
-}
-
-.confidence-header {
+.brutal-card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
-  flex-wrap: wrap;
-  gap: 15px;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #000000;
 }
 
-.confidence-info {
-  flex: 1;
-  min-width: 200px;
-}
-
-.confidence-label {
-  font-size: 0.85rem;
-  color: #666;
-  margin-bottom: 5px;
+.brutal-card-title {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  font-weight: 500;
+  letter-spacing: 0.1em;
 }
 
-.confidence-percentage {
-  font-size: 2.5rem;
+.brutal-processing-time {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
   font-weight: 700;
-  color: #333;
-  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #666666;
 }
 
-.confidence-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  white-space: nowrap;
+.brutal-result-card {
+  display: block;
 }
 
-.confidence-icon {
-  font-size: 1.1rem;
+.brutal-result-grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
-.confidence-level-text {
-  font-size: 0.85rem;
+@media (min-width: 768px) {
+  .brutal-result-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
-.confidence-bar-wrapper {
-  margin-top: 15px;
+/* Predicted Sign Card */
+.brutal-predicted-sign {
+  background-color: #FFFF00;
+  border: 2px solid #000000;
+  padding: 1.5rem;
+  box-shadow: 4px 4px 0px 0px #000000;
+  text-align: center;
 }
 
-.confidence-bar {
+.brutal-result-label {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+  color: #000000;
+}
+
+.brutal-sign-value {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #000000;
+}
+
+/* Confidence Card */
+.brutal-confidence-card {
+  background-color: #FFFFFF;
+  border: 2px solid #000000;
+  padding: 1.5rem;
+  box-shadow: 4px 4px 0px 0px #000000;
+  text-align: center;
+}
+
+.brutal-confidence-value {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  font-weight: 900;
+  margin-bottom: 1rem;
+  color: #000000;
+}
+
+.brutal-confidence-bar-container {
   width: 100%;
-  height: 30px;
-  background: #e0e0e0;
-  border-radius: 15px;
+  background-color: #CCCCCC;
+  border: 2px solid #000000;
+  height: 1.5rem;
   overflow: hidden;
-  position: relative;
 }
 
-.confidence-fill {
+.brutal-confidence-bar-fill {
+  background-color: #0000FF;
   height: 100%;
-  transition: width 0.5s ease;
-  border-radius: 15px;
+  transition: width 1s ease-out;
 }
 
-.confidence-help-text {
-  margin-top: 10px;
-  font-size: 0.8rem;
-  color: #888;
-  font-style: italic;
-  line-height: 1.4;
+/* Detailed Results */
+.brutal-detailed-results {
+  margin-top: 1.5rem;
+  background-color: #CCCCCC;
+  border: 2px solid #000000;
+  padding: 1.5rem;
 }
 
-/* RSCI-13: Color coding for confidence levels */
-.confidence-high {
-  border-left-color: #10b981;
-  background: #f0fdf4;
+.brutal-details-title {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 1rem;
+  color: #000000;
 }
 
-.confidence-high .confidence-percentage {
-  color: #059669;
-}
-
-.confidence-high .confidence-badge {
-  background: #d1fae5;
-  color: #065f46;
-}
-
-.confidence-high .confidence-bar {
-  background: #d1fae5;
-}
-
-.confidence-high .confidence-fill {
-  background: linear-gradient(90deg, #10b981 0%, #059669 100%);
-}
-
-.confidence-medium {
-  border-left-color: #f59e0b;
-  background: #fffbeb;
-}
-
-.confidence-medium .confidence-percentage {
-  color: #d97706;
-}
-
-.confidence-medium .confidence-badge {
-  background: #fef3c7;
-  color: #92400e;
-}
-
-.confidence-medium .confidence-bar {
-  background: #fef3c7;
-}
-
-.confidence-medium .confidence-fill {
-  background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%);
-}
-
-.confidence-low {
-  border-left-color: #ef4444;
-  background: #fef2f2;
-}
-
-.confidence-low .confidence-percentage {
-  color: #dc2626;
-}
-
-.confidence-low .confidence-badge {
-  background: #fee2e2;
-  color: #991b1b;
-}
-
-.confidence-low .confidence-bar {
-  background: #fee2e2;
-}
-
-.confidence-low .confidence-fill {
-  background: linear-gradient(90deg, #ef4444 0%, #dc2626 100%);
-}
-
-.all-classes {
-  margin-top: 30px;
-}
-
-.all-classes h4 {
-  margin-bottom: 15px;
-  color: #333;
-  font-size: 1.2rem;
-}
-
-.predictions-list {
+.brutal-predictions-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 0.5rem;
 }
 
-.prediction-item {
+.brutal-prediction-item {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 15px;
-  padding: 12px;
-  background: #f8f9ff;
-  border-radius: 6px;
+  padding: 0.75rem;
+  background-color: #FFFFFF;
+  border: 2px solid #000000;
+  gap: 1rem;
 }
 
-.prediction-sign {
+.brutal-prediction-sign {
   flex: 1;
-  font-weight: 500;
-  color: #333;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #000000;
 }
 
-.prediction-confidence {
-  min-width: 60px;
-  text-align: right;
-  font-weight: 600;
-  color: #667eea;
-}
-
-.prediction-bar {
+.brutal-prediction-bar-container {
   width: 150px;
   height: 8px;
-  background: #e0e0e0;
+  background-color: #CCCCCC;
+  border: 2px solid #000000;
   border-radius: 4px;
   overflow: hidden;
 }
 
-.prediction-fill {
+.brutal-prediction-bar-fill {
   height: 100%;
-  background: #667eea;
+  background-color: #0000FF;
   transition: width 0.3s ease;
 }
 
+.brutal-prediction-confidence {
+  min-width: 60px;
+  text-align: right;
+  font-weight: 900;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  color: #0000FF;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .brutal-card-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .brutal-prediction-item {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .brutal-prediction-bar-container {
+    width: 100%;
+  }
+}

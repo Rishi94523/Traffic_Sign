@@ -3,10 +3,8 @@
  * Related Jira Ticket: RSCI-13
  */
 
-import React from 'react'
 import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
-import { vi } from 'vitest'
 import ClassificationResult from '../components/ClassificationResult'
 
 describe('ClassificationResult Component - RSCI-13', () => {
@@ -28,11 +26,11 @@ describe('ClassificationResult Component - RSCI-13', () => {
     expect(confidencePercentages.length).toBeGreaterThan(0)
     expect(confidencePercentages[0]).toBeInTheDocument()
     
-    // Check high confidence badge
-    expect(screen.getByText('High Confidence')).toBeInTheDocument()
+    // Check confidence score label
+    expect(screen.getByText('CONFIDENCE SCORE')).toBeInTheDocument()
     
     // Check classification is displayed (may appear multiple times in main result and predictions)
-    const classifications = screen.getAllByText('Speed Limit 60')
+    const classifications = screen.getAllByText('SPEED LIMIT 60')
     expect(classifications.length).toBeGreaterThan(0)
   })
 
@@ -53,8 +51,8 @@ describe('ClassificationResult Component - RSCI-13', () => {
     const confidencePercentages = screen.getAllByText('65.0%')
     expect(confidencePercentages.length).toBeGreaterThan(0)
     
-    // Check medium confidence badge
-    expect(screen.getByText('Medium Confidence')).toBeInTheDocument()
+    // Check confidence score label
+    expect(screen.getByText('CONFIDENCE SCORE')).toBeInTheDocument()
   })
 
   test('displays low confidence score (<50%) with red styling', () => {
@@ -74,11 +72,11 @@ describe('ClassificationResult Component - RSCI-13', () => {
     const confidencePercentages = screen.getAllByText('35.0%')
     expect(confidencePercentages.length).toBeGreaterThan(0)
     
-    // Check low confidence badge
-    expect(screen.getByText('Low Confidence')).toBeInTheDocument()
+    // Check confidence score label
+    expect(screen.getByText('CONFIDENCE SCORE')).toBeInTheDocument()
   })
 
-  test('displays confidence help text explaining what confidence means', () => {
+  test('displays confidence score label', () => {
     const result = {
       classification: 'Speed Limit 60',
       confidence: 0.85,
@@ -87,7 +85,7 @@ describe('ClassificationResult Component - RSCI-13', () => {
 
     render(<ClassificationResult result={result} />)
 
-    expect(screen.getByText(/This indicates how confident the model is about this prediction/i)).toBeInTheDocument()
+    expect(screen.getByText('CONFIDENCE SCORE')).toBeInTheDocument()
   })
 
   test('displays all predictions with confidence scores', () => {
@@ -103,13 +101,13 @@ describe('ClassificationResult Component - RSCI-13', () => {
 
     render(<ClassificationResult result={result} />)
 
-    // Check all predictions are displayed
-    expect(screen.getByText('All Predictions')).toBeInTheDocument()
-    // Use getAllByText since "Speed Limit 60" appears in both main result and predictions list
-    const speedLimit60 = screen.getAllByText('Speed Limit 60')
+    // Check detailed breakdown is displayed
+    expect(screen.getByText('DETAILED BREAKDOWN')).toBeInTheDocument()
+    // Use getAllByText since "SPEED LIMIT 60" appears in both main result and predictions list
+    const speedLimit60 = screen.getAllByText('SPEED LIMIT 60')
     expect(speedLimit60.length).toBeGreaterThan(0)
-    expect(screen.getByText('Speed Limit 50')).toBeInTheDocument()
-    expect(screen.getByText('Stop')).toBeInTheDocument()
+    expect(screen.getByText('SPEED LIMIT 50')).toBeInTheDocument()
+    expect(screen.getByText('STOP')).toBeInTheDocument()
   })
 
   test('handles missing confidence gracefully', () => {
@@ -121,9 +119,9 @@ describe('ClassificationResult Component - RSCI-13', () => {
 
     render(<ClassificationResult result={result} />)
 
-    // Should display 0.0% and Low Confidence
+    // Should display 0.0%
     expect(screen.getByText('0.0%')).toBeInTheDocument()
-    expect(screen.getByText('Low Confidence')).toBeInTheDocument()
+    expect(screen.getByText('CONFIDENCE SCORE')).toBeInTheDocument()
   })
 
   test('handles edge case: exactly 80% confidence (high)', () => {
@@ -136,7 +134,7 @@ describe('ClassificationResult Component - RSCI-13', () => {
     render(<ClassificationResult result={result} />)
 
     expect(screen.getByText('80.0%')).toBeInTheDocument()
-    expect(screen.getByText('High Confidence')).toBeInTheDocument()
+    expect(screen.getByText('CONFIDENCE SCORE')).toBeInTheDocument()
   })
 
   test('handles edge case: exactly 50% confidence (medium)', () => {
@@ -149,7 +147,7 @@ describe('ClassificationResult Component - RSCI-13', () => {
     render(<ClassificationResult result={result} />)
 
     expect(screen.getByText('50.0%')).toBeInTheDocument()
-    expect(screen.getByText('Medium Confidence')).toBeInTheDocument()
+    expect(screen.getByText('CONFIDENCE SCORE')).toBeInTheDocument()
   })
 
   test('handles edge case: exactly 49.9% confidence (low)', () => {
@@ -162,7 +160,7 @@ describe('ClassificationResult Component - RSCI-13', () => {
     render(<ClassificationResult result={result} />)
 
     expect(screen.getByText('49.9%')).toBeInTheDocument()
-    expect(screen.getByText('Low Confidence')).toBeInTheDocument()
+    expect(screen.getByText('CONFIDENCE SCORE')).toBeInTheDocument()
   })
 
   test('returns null when result is not provided', () => {
@@ -170,7 +168,7 @@ describe('ClassificationResult Component - RSCI-13', () => {
     expect(container.firstChild).toBeNull()
   })
 
-  test('displays model confidence label', () => {
+  test('displays predicted sign label', () => {
     const result = {
       classification: 'Speed Limit 60',
       confidence: 0.85,
@@ -179,7 +177,8 @@ describe('ClassificationResult Component - RSCI-13', () => {
 
     render(<ClassificationResult result={result} />)
 
-    expect(screen.getByText('Model Confidence')).toBeInTheDocument()
+    expect(screen.getByText('PREDICTED SIGN')).toBeInTheDocument()
+    expect(screen.getByText('CONFIDENCE SCORE')).toBeInTheDocument()
   })
 })
 

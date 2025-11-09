@@ -1,42 +1,70 @@
+/* BRUTALIST IMAGE UPLOAD STYLES */
+
 .image-upload {
-  width: 100%;
+  margin-bottom: 1.5rem;
 }
 
 .upload-area {
-  border: 3px dashed #ccc;
-  border-radius: 12px;
-  padding: 60px 20px;
+  border: 4px dashed #000000;
+  padding: 3rem;
   text-align: center;
-  background: white;
-  transition: all 0.3s ease;
+  cursor: pointer;
+  transition: all 0.2s;
+  background-color: #FFFFFF;
 }
 
 .upload-area:hover {
-  border-color: #667eea;
-  background: #f8f9ff;
+  background-color: #CCCCCC;
+  border-style: solid;
 }
 
 .upload-area.drag-over {
-  border-color: #667eea;
-  background: #e8ebff;
-  border-width: 4px;
-  transform: scale(1.02);
+  background-color: #FFFF00 !important;
+  border-color: #000000 !important;
+  border-style: solid !important;
 }
 
 .upload-icon {
-  font-size: 4rem;
-  margin-bottom: 20px;
+  font-size: 3.75rem;
+  line-height: 1;
+  margin-bottom: 1rem;
 }
 
 .upload-text {
-  font-size: 1.2rem;
-  color: #333;
-  margin-bottom: 10px;
-  font-weight: 500;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+  color: #000000;
 }
 
 .upload-hint {
-  font-size: 0.9rem;
-  color: #666;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #666666;
+  margin-top: 1rem;
 }
 
+/* FILE TYPE NOTICE */
+.upload-notice {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.upload-notice-text {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #666666;
+}
+
+.mb-6 {
+  margin-bottom: 1.5rem;
+}

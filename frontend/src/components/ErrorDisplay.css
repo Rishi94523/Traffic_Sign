@@ -1,62 +1,33 @@
+/* BRUTALIST ERROR DISPLAY STYLES */
+
 .error-display {
-  width: 100%;
-  margin: 20px 0;
-  animation: slideIn 0.3s ease-out;
-}
-
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.error-container {
-  background: linear-gradient(135deg, #fee 0%, #fdd 100%);
-  border: 2px solid #f99;
-  border-left: 5px solid #e33;
-  border-radius: 8px;
-  padding: 20px;
-  display: flex;
-  align-items: flex-start;
-  gap: 15px;
-  box-shadow: 0 2px 8px rgba(238, 68, 68, 0.15);
-}
-
-.error-icon-wrapper {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  background: rgba(238, 68, 68, 0.1);
-  border-radius: 50%;
-}
-
-.error-icon {
-  font-size: 1.5rem;
-}
-
-.error-content {
-  flex: 1;
-}
-
-.error-title {
-  color: #c33;
-  margin: 0 0 8px 0;
-  font-size: 1.1rem;
-  font-weight: 600;
+  margin-bottom: 1.5rem;
 }
 
 .error-message {
-  color: #933;
-  margin: 0;
-  line-height: 1.6;
-  font-size: 0.95rem;
+  background-color: #FF0000;
+  color: #FFFFFF;
+  padding: 1rem;
+  border: 2px solid #000000;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-align: center;
+  box-shadow: 4px 4px 0px 0px #000000;
 }
 
+.error-title {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+}
+
+.error-text {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}

@@ -14,12 +14,12 @@ test('renders loading spinner with default message', () => {
   const spinner = screen.getByTestId('loading-spinner')
   expect(spinner).toBeInTheDocument()
   
-  const message = screen.getByText('Loading...')
+  const message = screen.getByText('LOADING...')
   expect(message).toBeInTheDocument()
 })
 
 test('renders loading spinner with custom message', () => {
-  const customMessage = 'Classifying image...'
+  const customMessage = 'PROCESSING IMAGE...'
   render(<LoadingSpinner message={customMessage} />)
   
   const message = screen.getByText(customMessage)

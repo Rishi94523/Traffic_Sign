@@ -52,6 +52,9 @@ dist-ssr/
 .coverage
 htmlcov/
 .tox/
+coverage/
+*.lcov
+*.lcov.info
 
 # Logs
 *.log

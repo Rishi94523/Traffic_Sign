@@ -1,30 +1,218 @@
-.App {
+/* BRUTALIST DESIGN SYSTEM */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.brutal-app {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 20px;
+  background-color: #FFFFFF;
+  color: #000000;
+  font-family: 'JetBrains Mono', monospace;
+  line-height: 1.2;
+  font-weight: 400;
 }
 
-.App-header {
-  text-align: center;
-  color: white;
-  margin-bottom: 40px;
+/* HEADER */
+.brutal-header {
+  background-color: #000000;
+  color: #FFFFFF;
+  padding: 2rem 1rem;
+  border-bottom: 4px solid #000000;
 }
 
-.App-header h1 {
-  font-size: 2.5rem;
-  margin-bottom: 10px;
-}
-
-.App-header p {
-  font-size: 1.2rem;
-  opacity: 0.9;
-}
-
-.App-main {
-  max-width: 1200px;
+.brutal-container {
+  max-width: 72rem;
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
+  text-align: center;
 }
 
+.brutal-title {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 0px #000000;
+}
+
+@media (min-width: 768px) {
+  .brutal-title {
+    font-size: 3.75rem;
+    line-height: 1;
+  }
+}
+
+.brutal-subtitle {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #FFFF00;
+}
+
+@media (min-width: 768px) {
+  .brutal-subtitle {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+}
+
+/* MAIN CONTENT */
+.brutal-main {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.brutal-section {
+  margin-bottom: 3rem;
+}
+
+/* CARD STYLES */
+.brutal-card {
+  background-color: #FFFFFF;
+  border: 4px solid #000000;
+  padding: 2rem;
+  box-shadow: 12px 12px 0px 0px #000000;
+}
+
+.brutal-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #000000;
+}
+
+.brutal-card-title {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.brutal-status-badge {
+  background-color: #FFFF00;
+  color: #000000;
+  padding: 0.5rem 1rem;
+  border: 2px solid #000000;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+/* STATUS CARD */
+.brutal-status-card {
+  background-color: #333333;
+  color: #FFFFFF;
+  border: 4px solid #000000;
+  padding: 1.5rem;
+  box-shadow: 4px 4px 0px 0px #000000;
+}
+
+.brutal-status-title {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 1rem;
+}
+
+.brutal-status-grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .brutal-status-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.brutal-status-item {
+  text-align: center;
+}
+
+.brutal-status-label {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+}
+
+.brutal-status-value {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+/* FOOTER */
+.brutal-footer {
+  background-color: #000000;
+  color: #FFFFFF;
+  padding: 2rem 1rem;
+  border-top: 4px solid #000000;
+  margin-top: 3rem;
+}
+
+.brutal-footer-content {
+  margin-bottom: 1rem;
+}
+
+.brutal-footer-text {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+}
+
+.brutal-footer-version {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #FFFF00;
+}
+
+.brutal-footer-security {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #666666;
+}
+
+/* UTILITY CLASSES */
+.brutal-shadow-sm {
+  box-shadow: 4px 4px 0px 0px #000000;
+}
+
+.brutal-shadow-lg {
+  box-shadow: 12px 12px 0px 0px #000000;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .brutal-card-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+}
