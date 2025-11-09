@@ -1,8 +1,6 @@
 {
   "version": 2,
   "framework": null,
-  "buildCommand": "cd frontend && npm install && npm run build",
-  "outputDirectory": "frontend/dist",
   "builds": [
     {
       "src": "api/index.py",
@@ -10,6 +8,14 @@
       "config": {
         "runtime": "python3.11",
         "maxLambdaSize": "50mb"
+      }
+    },
+    {
+      "src": "frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist",
+        "buildCommand": "npm run build"
       }
     }
   ],
@@ -19,11 +25,12 @@
       "dest": "/api/index.py"
     },
     {
-      "handle": "filesystem"
+      "src": "/",
+      "dest": "/frontend/dist/index.html"
     },
     {
       "src": "/(.*)",
-      "dest": "/frontend/dist/index.html"
+      "dest": "/frontend/dist/$1"
     }
   ]
 }
