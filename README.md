@@ -130,6 +130,7 @@ Follow conventional commit format:
 - [Setup Instructions](docs/setup_instructions.md)
 - [Sprint Summary](docs/sprint_summary.md)
 - [CI/CD Setup](docs/CI_CD_SETUP.md)
+- [Vercel Deployment Guide](docs/DEPLOYMENT_VERCEL.md)
 - [Backend README](backend/README.md)
 - [Frontend README](frontend/README.md)
 
@@ -197,6 +198,7 @@ This project uses GitHub Actions for continuous integration and deployment.
 **Deployment Options:**
 
 - **Manual**: Download `deploy-package.zip` from GitHub Actions and deploy manually
+- **Vercel**: Follow the [Vercel Deployment Guide](docs/DEPLOYMENT_VERCEL.md) to host both the FastAPI backend and React frontend on a single Vercel project
 - **Automated**: Configure webhooks for Render.com (backend) and Netlify/Vercel (frontend)
 
 For detailed CI/CD documentation, see [docs/CI_CD_SETUP.md](docs/CI_CD_SETUP.md)
