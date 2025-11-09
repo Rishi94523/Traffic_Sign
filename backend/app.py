@@ -13,9 +13,21 @@ load_dotenv(dotenv_path=DOTENV_PATH, override=False)
 app = FastAPI(title="Road Sign Classification API", version="1.0.0")
 
 # Configure CORS for frontend access
+# Allow all origins in production (Vercel serves frontend and API from same domain)
+# For local development, allow localhost ports
+CORS_ORIGINS = os.getenv("CORS_ORIGINS", "").split(",") if os.getenv("CORS_ORIGINS") else [
+    "http://localhost:5173",
+    "http://localhost:3000",
+    "http://localhost:8000",
+]
+
+# In production, allow all origins since frontend and backend are on same domain
+if os.getenv("VERCEL") or os.getenv("VERCEL_ENV"):
+    CORS_ORIGINS = ["*"]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000"],  # Vite default port
+    allow_origins=CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -32,6 +44,12 @@ app.include_router(classification_routes.router, prefix="/api/classification", t
 def health():
     """Health check endpoint"""
     return {"status": "ok"}
+
+
+@app.get("/api/health")
+def api_health():
+    """Health check endpoint for Vercel deployment"""
+    return {"status": "ok", "message": "API is running"}
 
 
 if __name__ == "__main__":
