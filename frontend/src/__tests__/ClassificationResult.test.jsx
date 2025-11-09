@@ -23,14 +23,17 @@ describe('ClassificationResult Component - RSCI-13', () => {
 
     render(<ClassificationResult result={result} />)
 
-    // Check confidence percentage is displayed
-    expect(screen.getByText('95.0%')).toBeInTheDocument()
+    // Check confidence percentage in main section (use getAllByText and check first one)
+    const confidencePercentages = screen.getAllByText('95.0%')
+    expect(confidencePercentages.length).toBeGreaterThan(0)
+    expect(confidencePercentages[0]).toBeInTheDocument()
     
     // Check high confidence badge
     expect(screen.getByText('High Confidence')).toBeInTheDocument()
     
-    // Check classification is displayed
-    expect(screen.getByText('Speed Limit 60')).toBeInTheDocument()
+    // Check classification is displayed (may appear multiple times in main result and predictions)
+    const classifications = screen.getAllByText('Speed Limit 60')
+    expect(classifications.length).toBeGreaterThan(0)
   })
 
   test('displays medium confidence score (50-79%) with yellow/orange styling', () => {
@@ -46,8 +49,9 @@ describe('ClassificationResult Component - RSCI-13', () => {
 
     render(<ClassificationResult result={result} />)
 
-    // Check confidence percentage
-    expect(screen.getByText('65.0%')).toBeInTheDocument()
+    // Check confidence percentage (may appear multiple times, check first occurrence)
+    const confidencePercentages = screen.getAllByText('65.0%')
+    expect(confidencePercentages.length).toBeGreaterThan(0)
     
     // Check medium confidence badge
     expect(screen.getByText('Medium Confidence')).toBeInTheDocument()
@@ -66,8 +70,9 @@ describe('ClassificationResult Component - RSCI-13', () => {
 
     render(<ClassificationResult result={result} />)
 
-    // Check confidence percentage
-    expect(screen.getByText('35.0%')).toBeInTheDocument()
+    // Check confidence percentage (may appear multiple times, check first occurrence)
+    const confidencePercentages = screen.getAllByText('35.0%')
+    expect(confidencePercentages.length).toBeGreaterThan(0)
     
     // Check low confidence badge
     expect(screen.getByText('Low Confidence')).toBeInTheDocument()
@@ -100,7 +105,9 @@ describe('ClassificationResult Component - RSCI-13', () => {
 
     // Check all predictions are displayed
     expect(screen.getByText('All Predictions')).toBeInTheDocument()
-    expect(screen.getByText('Speed Limit 60')).toBeInTheDocument()
+    // Use getAllByText since "Speed Limit 60" appears in both main result and predictions list
+    const speedLimit60 = screen.getAllByText('Speed Limit 60')
+    expect(speedLimit60.length).toBeGreaterThan(0)
     expect(screen.getByText('Speed Limit 50')).toBeInTheDocument()
     expect(screen.getByText('Stop')).toBeInTheDocument()
   })
