@@ -21,6 +21,15 @@ function ClassificationResult({ result }) {
   
   // Convert confidence to percentage
   const confidencePercentage = (confidence * 100).toFixed(1)
+  
+  // RSCI-13: Determine confidence level and styling
+  const getConfidenceLevel = (conf) => {
+    if (conf >= 0.8) return { level: 'high', label: 'High Confidence', icon: '✓', colorClass: 'confidence-high' }
+    if (conf >= 0.5) return { level: 'medium', label: 'Medium Confidence', icon: '⚠', colorClass: 'confidence-medium' }
+    return { level: 'low', label: 'Low Confidence', icon: '⚠', colorClass: 'confidence-low' }
+  }
+  
+  const confidenceInfo = getConfidenceLevel(confidence)
 
   return (
     <div className="classification-result">
@@ -32,16 +41,28 @@ function ClassificationResult({ result }) {
           <div className="result-label">Predicted Sign</div>
           <div className="result-value">{classification}</div>
           
-          {/* RSCI-13: Display confidence score with visual bar */}
-          <div className="confidence-bar-wrapper">
-            <div className="confidence-label">
-              Confidence: {confidencePercentage}%
+          {/* RSCI-13: Display confidence score prominently with level indicator */}
+          <div className={`confidence-section ${confidenceInfo.colorClass}`}>
+            <div className="confidence-header">
+              <div className="confidence-info">
+                <div className="confidence-label">Model Confidence</div>
+                <div className="confidence-percentage">{confidencePercentage}%</div>
+              </div>
+              <div className={`confidence-badge ${confidenceInfo.colorClass}`}>
+                <span className="confidence-icon">{confidenceInfo.icon}</span>
+                <span className="confidence-level-text">{confidenceInfo.label}</span>
+              </div>
             </div>
-            <div className="confidence-bar">
-              <div 
-                className="confidence-fill" 
-                style={{ width: `${confidencePercentage}%` }}
-              />
+            <div className="confidence-bar-wrapper">
+              <div className={`confidence-bar ${confidenceInfo.colorClass}`}>
+                <div 
+                  className={`confidence-fill ${confidenceInfo.colorClass}`}
+                  style={{ width: `${confidencePercentage}%` }}
+                />
+              </div>
+              <div className="confidence-help-text">
+                This indicates how confident the model is about this prediction. Higher confidence means more reliable results.
+              </div>
             </div>
           </div>
         </div>
