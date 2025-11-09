@@ -180,8 +180,8 @@ road-sign-classification/
 
 ## Additional Resources
 
-- [Backend README](backend/README.md)
-- [Frontend README](frontend/README.md)
+- [Backend README](../backend/README.md)
+- [Frontend README](../frontend/README.md)
 - [Sprint Summary](sprint_summary.md)
 
 ## Support
