@@ -1,5 +1,14 @@
+import os
+
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DOTENV_PATH = os.path.join(BASE_DIR, ".env")
+
+# Load environment variables from backend/.env if available
+load_dotenv(dotenv_path=DOTENV_PATH, override=False)
 
 app = FastAPI(title="Road Sign Classification API", version="1.0.0")
 

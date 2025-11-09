@@ -31,10 +31,10 @@ This repository contains the source code and documentation for the Traffic Sign 
 
 - [@Arpitha035](https://github.com/Arpitha035)
 
-
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - Python 3.8+ (for backend)
 - Node.js 16+ (for frontend)
 - Git
@@ -44,12 +44,14 @@ This repository contains the source code and documentation for the Traffic Sign 
 **See detailed setup instructions in [docs/setup_instructions.md](docs/setup_instructions.md)**
 
 1. Clone the repository
+
    ```bash
    git clone https://github.com/pestechnology/PESU_RR_AIML_D_P43_Traffic_Sign_Recognition_Demo_chicken-gang.git
    cd PESU_RR_AIML_D_P43_Traffic_Sign_Recognition_Demo_chicken-gang
    ```
 
 2. Set up Backend
+
    ```bash
    cd backend
    python -m venv venv
@@ -59,6 +61,7 @@ This repository contains the source code and documentation for the Traffic Sign 
    ```
 
 3. Set up Frontend (in a new terminal)
+
    ```bash
    cd frontend
    npm install
@@ -97,13 +100,16 @@ road-sign-classification/
 ## 🛠️ Development Guidelines
 
 ### Branching Strategy
+
 - `main`: Production-ready code
 - `develop`: Development branch
 - `feature/*`: Feature branches
 - `bugfix/*`: Bug fix branches
 
 ### Commit Messages
+
 Follow conventional commit format:
+
 - `feat:` New features
 - `fix:` Bug fixes
 - `docs:` Documentation changes
@@ -112,6 +118,7 @@ Follow conventional commit format:
 - `test:` Test-related changes
 
 ### Code Review Process
+
 1. Create feature branch from `main`
 2. Make changes and commit
 3. Create Pull Request to `main`
@@ -188,6 +195,7 @@ This project uses GitHub Actions for continuous integration and deployment.
 4. Uploads the package as an artifact for manual or automated deployment
 
 **Deployment Options:**
+
 - **Manual**: Download `deploy-package.zip` from GitHub Actions and deploy manually
 - **Automated**: Configure webhooks for Render.com (backend) and Netlify/Vercel (frontend)
 
